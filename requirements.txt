@@ -1,0 +1,7 @@
+python-telegram-bot
+yt-dlp
+ffmpeg-python
+Pillow
+httpx
+aiosqlite
+aiocache
