@@ -64,6 +64,7 @@ TEST_MODE = config['features']['TEST_MODE']
 DOWNLOAD_LIMIT_PER_HOUR = config['download']['DOWNLOAD_LIMIT_PER_HOUR']
 LOG_FILE = config['logging']['LOG_FILE']
 MAX_LOG_SIZE = config['logging']['LOG_MAX_SIZE_MB'] * 1024 * 1024
+COOKIE_FILE = config['download'].get('COOKIE_FILE')
 
 # --- Available languages ---
 AVAILABLE_LANGUAGES = [
@@ -508,7 +509,9 @@ async def process_download(update: Update, context: ContextTypes.DEFAULT_TYPE, u
         return
 
     quality_msg = await message.reply_text('Getting information about available video formats...')
-    ydl_opts = {'quiet': True, 'force_ipv4': True, 'cookiefile': (r'C:\Soft\!!python_scripts\cookies.txt')}
+    ydl_opts = {'quiet': True, 'force_ipv4': True}
+    if COOKIE_FILE:
+        ydl_opts['cookiefile'] = COOKIE_FILE
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = await asyncio.to_thread(ydl.extract_info, url, download=False)
@@ -656,8 +659,9 @@ async def _execute_download(application: Application, chat_id, user_id, username
             'outtmpl': os.path.join(temp_dir, f"video_{video_id}.%(ext)s"),
             'quiet': True,
             'progress_hooks': [lambda d: download_progress_hook(d, application)],
-            'cookiefile': (r'C:\Soft\!!python_scripts\cookies.txt'),
         })
+        if COOKIE_FILE:
+            ydl_opts['cookiefile'] = COOKIE_FILE
         
         quality_key = quality if quality != 'audio' else 'audio'
         if quality_key in QUALITY_FORMATS:

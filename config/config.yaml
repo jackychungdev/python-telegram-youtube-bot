@@ -9,6 +9,7 @@ download:
   DOWNLOAD_LIMIT_PER_HOUR: 3
   READ_TIMEOUT: 1800
   WRITE_TIMEOUT: 1800
+  COOKIE_FILE: null
 
 logging:
   LOG_FILE: "telegram_youtube_bot_err.log"
