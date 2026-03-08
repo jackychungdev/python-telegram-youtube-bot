@@ -27,27 +27,27 @@ from extractors.archive_ragtag import download_and_merge, is_archive_ragtag_url
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
-# --- Глобальная очередь для всех загрузок ---
+# --- Global queue for all downloads ---
 download_queue = asyncio.Queue()
 
-# Глобальные переменные
+# Global variables
 progress_message_ids = {}
 progress_tasks = {}
 downloads = {}
 active_downloads = {}
 DOWNLOAD_SEMAPHORE = asyncio.Semaphore(5)
 
-# Настройка логирования
+# Logging configuration
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[logging.StreamHandler()]
 )
 
-# Константы
-TOKEN = ''
-LOCAL_API_URL = 'http://localhost:8081/bot'
-ADMIN_CHAT_ID = 
+# Constants
+TOKEN = '6300921956:AAHwT-FhyiVXipdT_BIQHavPs-6rie5LpPw'
+LOCAL_API_URL = None  # Use Telegram's official servers
+ADMIN_CHAT_ID = '290569556'
 ALLOWED_CHATS = {}
 READ_TIMEOUT = 1800
 WRITE_TIMEOUT = 1800
@@ -56,10 +56,10 @@ DOWNLOAD_LIMIT_PER_HOUR = 3
 LOG_FILE = "telegram_youtube_bot_err.log"
 MAX_LOG_SIZE = 1 * 1024 * 1024
 
-# --- Доступные языки ---
+# --- Available languages ---
 AVAILABLE_LANGUAGES = [
-    {'code': 'ru', 'name': 'Русский', 'flag': '🇷🇺'},
-    {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
+    {'code': 'en', 'name': 'English', 'flag': '🇺🇸'},
+    {'code': 'ru', 'name': 'Russian', 'flag': '🇷🇺'},
     {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'}
 ]
 
@@ -136,47 +136,48 @@ def trim_log_file(file_path, max_size):
 
     logging.info(f"Лог-файл обрезан до {os.path.getsize(file_path) / 1024:.2f} KB")
 
-def init_db():
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-
-    # Таблица users
-    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='users' ''')
-    table_exists = c.fetchone()[0] == 1
-    if not table_exists:
-        c.execute('''CREATE TABLE users 
-                     (user_id INTEGER PRIMARY KEY, username TEXT, last_video_url TEXT, 
-                      last_online TEXT, awaiting_link INTEGER DEFAULT 0, 
-                      downloads_in_hour INTEGER DEFAULT 0, last_download_time TEXT)''')
-    else:
-        c.execute("PRAGMA table_info(users)")
-        columns = [col[1] for col in c.fetchall()]
-        if 'downloads_in_hour' not in columns:
-            c.execute('ALTER TABLE users ADD COLUMN downloads_in_hour INTEGER DEFAULT 0')
-        if 'last_download_time' not in columns:
-            c.execute('ALTER TABLE users ADD COLUMN last_download_time TEXT')
-
-    # Таблица authorized_users
-    conn_auth = sqlite3.connect('authorized_users.db')
-    c_auth = conn_auth.cursor()
-    c_auth.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='authorized_users' ''')
-    table_exists = c_auth.fetchone()[0] == 1
-    if not table_exists:
-        c_auth.execute('''CREATE TABLE authorized_users 
-                     (user_id INTEGER PRIMARY KEY)''')
-    conn_auth.commit()
-    conn_auth.close()
-
-    # Таблица user_languages
-    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='user_languages' ''')
-    table_exists = c.fetchone()[0] == 1
-    if not table_exists:
-        c.execute('''CREATE TABLE user_languages 
-                     (user_id INTEGER PRIMARY KEY, language_code TEXT DEFAULT 'ru')''')
-        logging.info("Таблица user_languages создана")
+async def init_db():
+    # users table
+    async with aiosqlite.connect('users.db') as conn:
+        await conn.execute('''CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY,
+            username TEXT,
+            link TEXT,
+            video_url TEXT,
+            awaiting_link INTEGER DEFAULT 0,
+            download_count INTEGER DEFAULT 0,
+            last_download_time INTEGER DEFAULT 0
+        )''')
+        await conn.commit()
     
-    conn.commit()
-    conn.close()
+    # authorized_users table
+    async with aiosqlite.connect('users.db') as conn:
+        await conn.execute('CREATE TABLE IF NOT EXISTS authorized_users (user_id INTEGER PRIMARY KEY)')
+        await conn.commit()
+    
+    # user_languages table
+    async with aiosqlite.connect('users.db') as conn:
+        await conn.execute('''CREATE TABLE IF NOT EXISTS user_languages (
+            user_id INTEGER PRIMARY KEY,
+            language_code TEXT
+        )''')
+        await conn.commit()
+        logging.info("user_languages table created")
+
+    # uploaded_videos table
+    async with aiosqlite.connect('users.db') as conn:
+        await conn.execute('''CREATE TABLE IF NOT EXISTS uploaded_videos (
+            video_id TEXT,
+            quality TEXT,
+            file_id TEXT PRIMARY KEY,
+            upload_date TEXT,
+            file_size INTEGER,
+            title TEXT,
+            channel_username TEXT,
+            channel_url TEXT
+        )''')
+        await conn.commit()
+        logging.info("uploaded_videos table created with new fields")
 
 def init_uploaded_videos_db():
     conn = sqlite3.connect('users.db')
@@ -205,7 +206,7 @@ def init_uploaded_videos_db():
     conn.close()
 
 async def get_user_language(user_id: int) -> str | None:
-    """Получает сохраненный язык пользователя."""
+    """Gets the user's saved language."""
     async with aiosqlite.connect('users.db') as conn:
         c = await conn.cursor()
         await c.execute('SELECT language_code FROM user_languages WHERE user_id = ?', (user_id,))
@@ -213,7 +214,7 @@ async def get_user_language(user_id: int) -> str | None:
         return result[0] if result else None
 
 async def set_user_language(user_id: int, lang_code: str):
-    """Сохраняет выбранный язык пользователя."""
+    """Saves the user's selected language."""
     async with aiosqlite.connect('users.db') as conn:
         await conn.execute('''INSERT OR REPLACE INTO user_languages 
                            (user_id, language_code) VALUES (?, ?)''', 
@@ -221,7 +222,7 @@ async def set_user_language(user_id: int, lang_code: str):
         await conn.commit()
 
 def select_language_menu():
-    """Генерирует InlineKeyboardMarkup для выбора языка."""
+    """Generates InlineKeyboardMarkup for language selection."""
     keyboard = [[InlineKeyboardButton(f"{lang['flag']} {lang['name']}", callback_data=f'lang_{lang["code"]}')]
                 for lang in AVAILABLE_LANGUAGES]
     return InlineKeyboardMarkup(keyboard)
@@ -245,7 +246,7 @@ async def save_file_id(video_id: str, quality: str, file_id: str, file_size: int
         await conn.commit()
 
 async def handle_uploaded_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # Логика обработки загруженного медиа (если нужно)
+    # Logic for processing uploaded media (if needed)
     message = update.message
     if not message or (not message.video and not message.audio):
         return
@@ -253,21 +254,21 @@ async def handle_uploaded_media(update: Update, context: ContextTypes.DEFAULT_TY
     if chat_id in progress_message_ids:
         progress_msg_id = progress_message_ids[chat_id]
         try:
-            await context.bot.edit_message_text(chat_id=chat_id, message_id=progress_msg_id, text="Отправка завершена (100%)")
+            await context.bot.edit_message_text(chat_id=chat_id, message_id=progress_msg_id, text="Upload complete (100%)")
             if chat_id in progress_tasks:
                 progress_tasks[chat_id].cancel()
                 del progress_tasks[chat_id]
             del progress_message_ids[chat_id]
         except Exception as e:
-            logging.error(f"Ошибка обработки загруженного медиа: {e}")
+            logging.error(f"Error processing uploaded media: {e}")
 
 async def send_file_with_progress(context: ContextTypes.DEFAULT_TYPE, chat_id: int, message_id: int, filename: str, 
                                  media_type: str, title: str, width=None, height=None, duration=None, 
                                  thumbnail=None, caption=None):
-    # Логика отправки файла с прогрессом
+    # File sending logic with progress
     url = f"{LOCAL_API_URL}{context.bot.token}/{'sendVideo' if media_type == 'video' else 'sendAudio'}"
     total_size = os.path.getsize(filename)
-    logging.info(f"Начинаем отправку файла: {filename}, размер: {total_size / (1024 * 1024):.2f} MiB")
+    logging.info(f"Starting file upload: {filename}, size: {total_size / (1024 * 1024):.2f} MiB")
 
     files = {}
     thumb_file = None
@@ -307,8 +308,7 @@ async def send_file_with_progress(context: ContextTypes.DEFAULT_TYPE, chat_id: i
 
     except Exception as e:
         logging.error(f"Ошибка при отправке файла: {e}", exc_info=True)
-        await context.bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=f"Ошибка: {str(e)}")
-        raise
+        await context.bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=f"Error: {str(e)}")
 
 async def update_user(user_id, username, video_url=None, awaiting_link=None, increment_download=False):
     async with aiosqlite.connect('users.db') as conn:
@@ -369,12 +369,14 @@ async def remove_authorized_user(user_id):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
+    # Log /start command
+    logging.info(f"🚀 /start command from @{user.username} (ID: {user.id})")
     await update_user(user.id, user.username)
     
     user_lang = await get_user_language(user.id)
     if not user_lang:
         await update.message.reply_text(
-            "Добро пожаловать! Пожалуйста, выберите **язык аудиодорожки по умолчанию**:",
+            "Welcome! Please select your **default audio language**:",
             reply_markup=select_language_menu(),
             parse_mode='Markdown'
         )
@@ -390,10 +392,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if user.id == ADMIN_CHAT_ID or await is_user_authorized(user.id):
             await process_download(update, context, url, user.id, user.username)
         else:
-            await update.message.reply_text('Привет! Чтобы использовать бота, дождись авторизации от админа.')
+            await update.message.reply_text('Hello! To use the bot, please wait for authorization from the admin.')
             await request_authorization(update, context, user.id, user.username)
     else:
-        text = 'Привет, админ! Отправляй ссылку.' if user.id == ADMIN_CHAT_ID else 'Привет! Для использования бота нужна авторизация.'
+        text = 'Hello, admin! Send a link.' if user.id == ADMIN_CHAT_ID else 'Hello! Authorization is required to use the bot.'
         await update.message.reply_text(text)
 
 async def request_authorization(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id, username):
@@ -404,13 +406,13 @@ async def request_authorization(update: Update, context: ContextTypes.DEFAULT_TY
     if await is_user_authorized(user_id):
         return True
     
-    keyboard = [[InlineKeyboardButton("Разрешить", callback_data=f'allow_{user_id}'),
-                 InlineKeyboardButton("Запретить", callback_data=f'deny_{user_id}')]]
+    keyboard = [[InlineKeyboardButton("Allow", callback_data=f'allow_{user_id}'),
+                 InlineKeyboardButton("Deny", callback_data=f'deny_{user_id}')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await context.bot.send_message(
         chat_id=ADMIN_CHAT_ID,
-        text=f"Пользователь {username} (ID: {user_id}) хочет использовать бота. Разрешить?",
+        text=f"User {username} (ID: {user_id}) wants to use the bot. Allow?",
         reply_markup=reply_markup
     )
     return False
@@ -424,19 +426,22 @@ async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     url = message.text
     
+    # Log received messages
+    logging.info(f"📨 Message received from @{user.username} (ID: {user.id}): {url}")
+    
     if message.chat.type != 'private' and message.chat.id not in ALLOWED_CHATS:
         return
 
     if not await get_user_language(user.id):
-        await update.message.reply_text("Пожалуйста, сначала выберите язык по умолчанию через команду /lang или нажав кнопку в /start.")
+        await update.message.reply_text("Please select your default language first using the /lang command or the button in /start.")
         return
 
     if not await request_authorization(update, context, user.id, user.username):
-        await message.reply_text('Ожидайте подтверждения от админа.')
+        await message.reply_text('Waiting for admin confirmation.')
         return
 
     if not is_valid_youtube_url(url):
-        await message.reply_text('Пожалуйста, отправь валидную ссылку.')
+        await message.reply_text('Please send a valid link.')
         return
 
     await update_user(user.id, user.username, url)
@@ -445,7 +450,7 @@ async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def lang_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Выберите **язык аудиодорожки по умолчанию**:",
+        "Select your **default audio language**:",
         reply_markup=select_language_menu(),
         parse_mode='Markdown'
     )
@@ -453,23 +458,26 @@ async def lang_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def download_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.effective_message
     user = update.effective_user
+    
+    # Log /download command
+    logging.info(f"📥 /download command from @{user.username} (ID: {user.id}), args: {context.args}")
 
     if not await request_authorization(update, context, user.id, user.username):
-        await message.reply_text('Ожидайте подтверждения от админа.')
+        await message.reply_text('Waiting for admin confirmation.')
         return
     
     if not await get_user_language(user.id):
-        await update.message.reply_text("Пожалуйста, сначала выберите язык по умолчанию через команду /lang или нажав кнопку в /start.")
+        await update.message.reply_text("Please select your default language first using the /lang command or the button in /start.")
         return
 
     if not context.args:
-        await message.reply_text('Пожалуйста, отправьте ссылку на YouTube в следующем сообщении.')
+        await message.reply_text('Please send a YouTube link in the next message.')
         await update_user(user.id, user.username, awaiting_link=1)
         return
     
     url = context.args[0]
     if not is_valid_youtube_url(url):
-        await message.reply_text('Пожалуйста, укажи валидную ссылку.')
+        await message.reply_text('Please provide a valid link.')
         return
 
     await update_user(user.id, user.username, url)
@@ -479,25 +487,25 @@ async def process_download(update: Update, context: ContextTypes.DEFAULT_TYPE, u
     message = update.effective_message
     video_id = extract_video_id(url)
     if not video_id:
-        await message.reply_text('Ошибка: не удалось извлечь ID видео из ссылки.')
+        await message.reply_text('Error: Could not extract video ID from the link.')
         return
 
     context.bot_data.setdefault('pending_downloads', {})[user_id] = {'url': url}
     
     parsed_url = urlparse(url)
     if parsed_url.netloc not in YOUTUBE_DOMAINS:
-        keyboard = [[InlineKeyboardButton("Начать скачивание", callback_data=f'download|{video_id}|{user_id}')]]
-        await message.reply_text(f'Видео с {parsed_url.netloc}: нажмите, чтобы скачать.', reply_markup=InlineKeyboardMarkup(keyboard))
+        keyboard = [[InlineKeyboardButton("Start Download", callback_data=f'download|{video_id}|{user_id}')]]
+        await message.reply_text(f'Video from {parsed_url.netloc}: click to download.', reply_markup=InlineKeyboardMarkup(keyboard))
         return
 
-    quality_msg = await message.reply_text('Получаем информацию о доступных форматах видео...')
+    quality_msg = await message.reply_text('Getting information about available video formats...')
     ydl_opts = {'quiet': True, 'force_ipv4': True, 'cookiefile': (r'C:\Soft\!!python_scripts\cookies.txt')}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = await asyncio.to_thread(ydl.extract_info, url, download=False)
         formats = info.get('formats', [])
     except Exception as e:
-        await quality_msg.edit_text(f"Не удалось получить информацию о видео: {e}")
+        await quality_msg.edit_text(f"Failed to get video information: {e}")
         return
 
     available_qualities = set()
@@ -521,10 +529,10 @@ async def process_download(update: Update, context: ContextTypes.DEFAULT_TYPE, u
         keyboard.append([InlineKeyboardButton("Audio", callback_data=f'audio|{video_id}|{user_id}')])
 
     if not keyboard:
-        await quality_msg.edit_text("Для этого видео не найдено доступных форматов для скачивания.")
+        await quality_msg.edit_text("No available formats found for download for this video.")
         return
         
-    await quality_msg.edit_text('Выберите качество видео или аудио:', reply_markup=InlineKeyboardMarkup(keyboard))
+    await quality_msg.edit_text('Select video quality or audio:', reply_markup=InlineKeyboardMarkup(keyboard))
 
 def download_progress_hook(d, context):
     chat_id = context.bot_data.get('download_info', {}).get('chat_id')
@@ -535,10 +543,10 @@ def download_progress_hook(d, context):
         total = d.get('total_bytes') or d.get('total_bytes_estimate', 0)
         if total > 0:
             percent = int(d['downloaded_bytes'] / total * 100)
-            text = f"Скачивание: {percent}%..."
+            text = f"Downloading: {percent}%..."
             downloads[chat_id] = {'percent': percent, 'text': text}
     elif d['status'] == 'finished':
-        downloads[chat_id] = {'percent': 100, 'text': 'Скачивание завершено, обработка...'}
+        downloads[chat_id] = {'percent': 100, 'text': 'Download complete, processing...'}
 
 def get_media_metadata(file_path):
     try:
@@ -551,7 +559,7 @@ def get_media_metadata(file_path):
             duration = float(audio.get('duration', 0)) or float(probe.get('format', {}).get('duration', 0))
             return 'audio', None, None, duration
     except Exception as e:
-        logging.error(f"Ошибка получения метаданных: {e}")
+        logging.error(f"Error getting metadata: {e}")
         return None, None, None, None
 
 def download_thumbnail(url, video_id):
@@ -565,7 +573,7 @@ def download_thumbnail(url, video_id):
         img.save(path, 'JPEG')
         return path
     except Exception as e:
-        logging.error(f"Ошибка скачивания миниатюры: {e}")
+        logging.error(f"Error downloading thumbnail: {e}")
         return None
 
 async def update_progress_task(context: ContextTypes.DEFAULT_TYPE, chat_id: int, message_id: int):
@@ -575,7 +583,7 @@ async def update_progress_task(context: ContextTypes.DEFAULT_TYPE, chat_id: int,
             try:
                 await context.bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=data['text'])
                 data['last_percent'] = data['percent']
-            except Exception: pass
+            except Exception as e: pass
         await asyncio.sleep(2)
 
 def extract_video_id(url):
@@ -597,14 +605,14 @@ async def download_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = int(user_id_str)
     
     if query.from_user.id != user_id:
-        await query.message.reply_text("Эта кнопка для другого пользователя.")
+        await query.message.reply_text("This button is for another user.")
         return
 
     url = context.bot_data.get('pending_downloads', {}).get(user_id, {}).get('url') or f"https://youtu.be/{video_id}"
     await download_queue.put((query.message.chat_id, user_id, query.from_user.username, url, quality, video_id, query.message.message_id))
     
     await query.edit_message_text(
-        text=f"✅ Запрос принят. Позиция в очереди: **{download_queue.qsize()}**.",
+        text=f"✅ Request accepted. Queue position: **{download_queue.qsize()}**.",
         reply_markup=None,
         parse_mode='Markdown'
     )
@@ -614,7 +622,7 @@ async def _execute_download(application: Application, chat_id, user_id, username
 
     cached_file, title, ch_user, ch_url = await get_cached_file_id(video_id, quality)
     if cached_file:
-        caption = f"{title}\nИсточник: <a href=\"{ch_url}\">{ch_user}</a>"
+        caption = f"{title}\nSource: <a href=\"{ch_url}\">{ch_user}</a>"
         try:
             if quality == "audio":
                 await application.bot.send_audio(chat_id, cached_file, caption=caption, parse_mode='HTML')
@@ -623,10 +631,10 @@ async def _execute_download(application: Application, chat_id, user_id, username
             await application.bot.delete_message(chat_id, progress_message_id)
             return
         except Exception as e:
-            logging.warning(f"Ошибка отправки из кэша: {e}")
+            logging.warning(f"Error sending from cache: {e}")
 
     preferred_lang = await get_user_language(user_id)
-    lang_preference = [f'lang:{preferred_lang or "ru"}'] # По умолчанию 'ru'
+    lang_preference = [f'lang:{preferred_lang or "en"}'] # Default 'en'
 
     active_downloads[chat_id] = user_id
     application.bot_data['download_info'] = {'chat_id': chat_id, 'message_id': progress_message_id, 'is_downloading': True}
@@ -659,40 +667,40 @@ async def _execute_download(application: Application, chat_id, user_id, username
             filename = ydl.prepare_filename(info)
         
         if not os.path.exists(filename):
-            raise FileNotFoundError(f"Файл не был создан: {filename}")
+            raise FileNotFoundError(f"File was not created: {filename}")
 
-        # --- Извлечение метаданных ---
+        # --- Extract metadata ---
         file_size = os.path.getsize(filename)
         media_type, width, height, duration = get_media_metadata(filename)
         thumb = download_thumbnail(info.get('thumbnail'), video_id)
         
-        title = info.get('title', 'Без названия')
-        uploader = info.get('uploader', 'Неизвестно')
+        title = info.get('title', 'Untitled')
+        uploader = info.get('uploader', 'Unknown')
         uploader_url = info.get('channel_url') or info.get('webpage_url', url)
 
-        # --- Формирование подписи для пользователя (с разрешением) ---
+        # --- Form user caption (with resolution) ---
         if quality != 'audio':
-            # Добавляем разрешение к названию для видео
-            user_caption = f"{title} ({quality}p)\nИсточник: <a href=\"{uploader_url}\">{uploader}</a>"
+            # Add resolution to title for videos
+            user_caption = f"{title} ({quality}p)\nSource: <a href=\"{uploader_url}\">{uploader}</a>"
         else:
-            # Для аудио только название и источник
-            user_caption = f"{title}\nИсточник: <a href=\"{uploader_url}\">{uploader}</a>"
+            # For audio only title and source
+            user_caption = f"{title}\nSource: <a href=\"{uploader_url}\">{uploader}</a>"
             
         file_id = await send_file_with_progress(application, chat_id, progress_message_id, filename, media_type, title, width, height, duration, thumb, user_caption)
         
-        # --- УВЕДОМЛЕНИЕ АДМИНА ---
+        # --- ADMIN NOTIFICATION ---
         if user_id != ADMIN_CHAT_ID:
             quality_text = f"({quality}p)" if quality != 'audio' else "(Audio)"
             
             admin_caption = (
-                f"**🚀 НОВАЯ ЗАГРУЗКА**\n"
-                f"**Пользователь:** @{username} (ID: <code>{user_id}</code>)\n\n"
+                f"**🚀 NEW DOWNLOAD**\n"
+                f"**User:** @{username} (ID: <code>{user_id}</code>)\n\n"
                 f"{title} {quality_text}\n"
-                f"**Источник:** <a href=\"{uploader_url}\">{uploader}</a>"
+                f"**Source:** <a href=\"{uploader_url}\">{uploader}</a>"
             )
             
             try:
-                # Отправка медиафайла админу по file_id
+                # Send media file to admin by file_id
                 if media_type == "audio":
                     await application.bot.send_audio(
                         ADMIN_CHAT_ID, 
@@ -714,15 +722,15 @@ async def _execute_download(application: Application, chat_id, user_id, username
                         supports_streaming=True
                     )
             except Exception as e:
-                logging.error(f"Ошибка отправки медиа админу: {e}")
-        # --- КОНЕЦ УВЕДОМЛЕНИЯ АДМИНА ---
+                logging.error(f"Error sending media to admin: {e}")
+        # --- END ADMIN NOTIFICATION ---
 
         await save_file_id(video_id, quality, file_id, file_size, title, uploader, info.get('channel_url'))
         await application.bot.delete_message(chat_id, progress_message_id)
     
     except Exception as e:
-        logging.error(f"Ошибка при выполнении загрузки: {e}", exc_info=True)
-        await application.bot.edit_message_text(chat_id, progress_message_id, f'Произошла ошибка: {e}')
+        logging.error(f"Error executing download: {e}", exc_info=True)
+        await application.bot.edit_message_text(chat_id, progress_message_id, f'An error occurred: {e}')
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
         if chat_id in active_downloads: del active_downloads[chat_id]
@@ -732,24 +740,24 @@ async def _execute_download(application: Application, chat_id, user_id, username
         if 'download_info' in application.bot_data: del application.bot_data['download_info']
 
 async def queue_processor(application: Application):
-    logging.info("Обработчик очереди запущен.")
+    logging.info("Queue processor started.")
     while True:
         try:
             chat_id, user_id, username, url, quality, video_id, original_msg_id = await download_queue.get()
             
             async with DOWNLOAD_SEMAPHORE:
-                logging.info(f"Начинаем обработку для user_id={user_id}. В очереди: {download_queue.qsize()}")
-                await application.bot.send_message(chat_id, "⏳ Ваша очередь подошла, начинаю загрузку...")
+                logging.info(f"Starting processing for user_id={user_id}. Queue: {download_queue.qsize()}")
+                await application.bot.send_message(chat_id, "⏳ Your turn has come, starting download...")
                 if original_msg_id:
                     try: await application.bot.delete_message(chat_id, original_msg_id)
                     except Exception: pass
 
-                progress_msg = await application.bot.send_message(chat_id, "Скачивание: 0%")
+                progress_msg = await application.bot.send_message(chat_id, "Downloading: 0%")
                 
                 await _execute_download(application, chat_id, user_id, username, url, quality, video_id, progress_msg.message_id)
             download_queue.task_done()
         except Exception as e:
-            logging.error(f"Ошибка в обработчике очереди: {e}", exc_info=True)
+            logging.error(f"Error in queue processor: {e}", exc_info=True)
 
 async def handle_auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -762,12 +770,12 @@ async def handle_auth_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     
     if action == 'allow':
         await add_authorized_user(user_id)
-        await context.bot.send_message(user_id, 'Админ разрешил вам использовать бота!')
-        await query.edit_message_text(f'Доступ для ID {user_id} разрешён.')
+        await context.bot.send_message(user_id, 'The admin has allowed you to use the bot!')
+        await query.edit_message_text(f'Access for ID {user_id} granted.')
     elif action == 'deny':
         await remove_authorized_user(user_id)
-        await context.bot.send_message(user_id, 'Админ запретил вам использовать бота.')
-        await query.edit_message_text(f'Доступ для ID {user_id} запрещён.')
+        await context.bot.send_message(user_id, 'The admin has denied your access to the bot.')
+        await query.edit_message_text(f'Access for ID {user_id} denied.')
 
 async def handle_language_selection(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -777,17 +785,17 @@ async def handle_language_selection(update: Update, context: ContextTypes.DEFAUL
     user_id = query.from_user.id
     
     if lang_code not in [lang['code'] for lang in AVAILABLE_LANGUAGES]:
-        await query.edit_message_text("Неизвестный язык.")
+        await query.edit_message_text("Unknown language.")
         return
 
     await set_user_language(user_id, lang_code)
     
     selected_lang_info = next(lang for lang in AVAILABLE_LANGUAGES if lang['code'] == lang_code)
     
-    if update.callback_query.message.text.startswith("Добро пожаловать"):
-         text = 'Привет, админ! Отправляй ссылку.' if user_id == ADMIN_CHAT_ID else 'Привет! Для использования бота нужна авторизация.'
+    if update.callback_query.message.text.startswith("Welcome"):
+         text = 'Hello, admin! Send a link.' if user_id == ADMIN_CHAT_ID else 'Hello! Authorization is required to use the bot.'
          await query.edit_message_text(
-            text=f"✅ Язык по умолчанию установлен: **{selected_lang_info['flag']} {selected_lang_info['name']}**.\n\n"
+            text=f"✅ Default language set: **{selected_lang_info['flag']} {selected_lang_info['name']}**.\n\n"
                  f"{text}",
             parse_mode='Markdown',
             reply_markup=None
@@ -796,8 +804,8 @@ async def handle_language_selection(update: Update, context: ContextTypes.DEFAUL
              await request_authorization(update, context, user_id, query.from_user.username)
     else:
         await query.edit_message_text(
-            text=f"✅ Язык по умолчанию установлен: **{selected_lang_info['flag']} {selected_lang_info['name']}**.\n"
-                 "Бот будет стараться выбирать аудиодорожку на этом языке.",
+            text=f"✅ Default language set: **{selected_lang_info['flag']} {selected_lang_info['name']}**.\n"
+                 "The bot will try to select audio tracks in this language.",
             parse_mode='Markdown',
             reply_markup=None
         )
@@ -805,36 +813,34 @@ async def handle_language_selection(update: Update, context: ContextTypes.DEFAUL
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.inline_query.from_user.id
     if not await is_user_authorized(user_id):
-        await update.inline_query.answer([], button=InlineQueryResultsButton(text="Требуется авторизация", start_parameter="auth"))
+        await update.inline_query.answer([], button=InlineQueryResultsButton(text="Authorization required", start_parameter="auth"))
         return
 
     query = update.inline_query.query.strip()
     if is_valid_youtube_url(query):
         video_id = extract_video_id(query)
         results = [InlineQueryResultArticle(
-            id=f"download_{video_id}", title="Скачать видео",
-            input_message_content=InputTextMessageContent(f"Скачиваю: {query}"),
-            button=InlineQueryResultsButton(text="Выбрать качество в боте", start_parameter=f"download_{video_id}")
+            id=f"download_{video_id}", title="Download video",
+            input_message_content=InputTextMessageContent(f"Downloading: {query}"),
+            button=InlineQueryResultsButton(text="Select quality in bot", start_parameter=f"download_{video_id}")
         )]
         await update.inline_query.answer(results, cache_time=60)
 
 async def post_init(application: Application):
-    """Запускает фоновые задачи после того, как event loop был создан."""
+    """Starts background tasks after the event loop has been created."""
+    await init_db()
+    init_uploaded_videos_db()
     asyncio.create_task(queue_processor(application))
 
 def main():
     setup_cache()
-    init_db()
-    init_uploaded_videos_db()
     
-    application = (
-        Application.builder()
-        .token(TOKEN)
-        .base_url(LOCAL_API_URL)
-        .request(HTTPXRequest(connect_timeout=30, read_timeout=1800))
-        .post_init(post_init)
-        .build()
-    )
+    application_builder = Application.builder().token(TOKEN).request(HTTPXRequest(connect_timeout=30, read_timeout=1800))
+    
+    if LOCAL_API_URL:
+        application_builder = application_builder.base_url(LOCAL_API_URL)
+    
+    application = application_builder.post_init(post_init).build()
     
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("lang", lang_command)) 
