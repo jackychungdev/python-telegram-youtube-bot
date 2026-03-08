@@ -1,6 +1,7 @@
 import os
 import re
 import sqlite3
+import yaml
 from datetime import datetime
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultArticle, InputTextMessageContent
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, InlineQueryHandler
@@ -27,6 +28,14 @@ from extractors.archive_ragtag import download_and_merge, is_archive_ragtag_url
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
+# Load configuration from config.yaml
+def load_config():
+    config_path = os.path.join(os.path.dirname(__file__), 'config', 'config.yaml')
+    with open(config_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+config = load_config()
+
 # --- Global queue for all downloads ---
 download_queue = asyncio.Queue()
 
@@ -35,7 +44,7 @@ progress_message_ids = {}
 progress_tasks = {}
 downloads = {}
 active_downloads = {}
-DOWNLOAD_SEMAPHORE = asyncio.Semaphore(5)
+DOWNLOAD_SEMAPHORE = asyncio.Semaphore(config['download']['DOWNLOAD_SEMAPHORE'])
 
 # Logging configuration
 logging.basicConfig(
@@ -44,17 +53,17 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()]
 )
 
-# Constants
-TOKEN = '6300921956:AAHwT-FhyiVXipdT_BIQHavPs-6rie5LpPw'
-LOCAL_API_URL = None  # Use Telegram's official servers
-ADMIN_CHAT_ID = '290569556'
-ALLOWED_CHATS = {}
-READ_TIMEOUT = 1800
-WRITE_TIMEOUT = 1800
-TEST_MODE = False
-DOWNLOAD_LIMIT_PER_HOUR = 3
-LOG_FILE = "telegram_youtube_bot_err.log"
-MAX_LOG_SIZE = 1 * 1024 * 1024
+# Constants from config
+TOKEN = config['bot']['TOKEN']
+LOCAL_API_URL = config['bot']['LOCAL_API_URL']
+ADMIN_CHAT_ID = config['bot']['ADMIN_CHAT_ID']
+ALLOWED_CHATS = set(config['bot']['ALLOWED_CHATS'])
+READ_TIMEOUT = config['download']['READ_TIMEOUT']
+WRITE_TIMEOUT = config['download']['WRITE_TIMEOUT']
+TEST_MODE = config['features']['TEST_MODE']
+DOWNLOAD_LIMIT_PER_HOUR = config['download']['DOWNLOAD_LIMIT_PER_HOUR']
+LOG_FILE = config['logging']['LOG_FILE']
+MAX_LOG_SIZE = config['logging']['LOG_MAX_SIZE_MB'] * 1024 * 1024
 
 # --- Available languages ---
 AVAILABLE_LANGUAGES = [
