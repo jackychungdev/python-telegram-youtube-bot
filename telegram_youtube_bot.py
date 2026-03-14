@@ -154,16 +154,39 @@ async def init_db():
         await conn.execute('''CREATE TABLE IF NOT EXISTS users (
             user_id INTEGER PRIMARY KEY,
             username TEXT,
-            link TEXT,
-            video_url TEXT,
+            last_video_url TEXT,
+            last_online TEXT,
             awaiting_link INTEGER DEFAULT 0,
-            download_count INTEGER DEFAULT 0,
-            last_download_time INTEGER DEFAULT 0
+            downloads_in_hour INTEGER DEFAULT 0,
+            last_download_time TEXT
         )''')
+        
+        # Add migration for existing databases - add missing columns if they don't exist
+        try:
+            await conn.execute('ALTER TABLE users ADD COLUMN last_video_url TEXT')
+        except aiosqlite.OperationalError:
+            pass  # Column already exists
+        
+        try:
+            await conn.execute('ALTER TABLE users ADD COLUMN last_online TEXT')
+        except aiosqlite.OperationalError:
+            pass  # Column already exists
+            
+        try:
+            await conn.execute('ALTER TABLE users ADD COLUMN downloads_in_hour INTEGER DEFAULT 0')
+        except aiosqlite.OperationalError:
+            pass  # Column already exists
+            
+        try:
+            await conn.execute('ALTER TABLE users ADD COLUMN last_download_time TEXT')
+        except aiosqlite.OperationalError:
+            pass  # Column already exists
+            
         await conn.commit()
+        logging.info("users table initialized/migrated")
     
     # authorized_users table
-    async with aiosqlite.connect('users.db') as conn:
+    async with aiosqlite.connect('authorized_users.db') as conn:
         await conn.execute('CREATE TABLE IF NOT EXISTS authorized_users (user_id INTEGER PRIMARY KEY)')
         await conn.commit()
     

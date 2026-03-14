@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   telegram-youtube-bot:
-    build: ..
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile
     image: mingtosomeone/telegram-youtube-bot:1.1.0
     container_name: telegram-youtube-bot
     restart: unless-stopped
