@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  telegram-youtube-bot:
+    build: ..
+    image: mingtosomeone/telegram-youtube-bot:1.1.0
+    container_name: telegram-youtube-bot
+    restart: unless-stopped
+    volumes:
+      # Persist databases
+      - ../data:/app/data
+      # Mount config directory (optional - can also use environment variables)
+      - ../config:/app/config:ro
+      # Persist logs
+      - ../logs:/app/logs
+    environment:
+      # Override config values via environment variables if needed
+      - PYTHONUNBUFFERED=1
+    # Uncomment below to see live logs
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"

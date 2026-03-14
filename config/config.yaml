@@ -10,6 +10,8 @@ download:
   READ_TIMEOUT: 1800
   WRITE_TIMEOUT: 1800
   COOKIE_FILE: null
+  OUTPUT_FOLDER: './downloads'
+  KEEP_FILES: true
 
 logging:
   LOG_FILE: "telegram_youtube_bot_err.log"

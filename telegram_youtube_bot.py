@@ -65,6 +65,8 @@ DOWNLOAD_LIMIT_PER_HOUR = config['download']['DOWNLOAD_LIMIT_PER_HOUR']
 LOG_FILE = config['logging']['LOG_FILE']
 MAX_LOG_SIZE = config['logging']['LOG_MAX_SIZE_MB'] * 1024 * 1024
 COOKIE_FILE = config['download'].get('COOKIE_FILE')
+OUTPUT_FOLDER = config['download'].get('OUTPUT_FOLDER', './downloads')
+KEEP_FILES = config['download'].get('KEEP_FILES', True)
 
 # --- Available languages ---
 AVAILABLE_LANGUAGES = [
@@ -629,7 +631,7 @@ async def download_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode='Markdown'
     )
 
-async def _execute_download(application: Application, chat_id, user_id, username, url, quality, video_id, progress_message_id):
+async def _execute_download(application: Application, chat_id, user_id, username, url, quality, video_id, progress_message_id, start_message_id=None):
     await update_user(user_id, username, url, increment_download=True)
 
     cached_file, title, ch_user, ch_url = await get_cached_file_id(video_id, quality)
@@ -641,6 +643,10 @@ async def _execute_download(application: Application, chat_id, user_id, username
             else:
                 await application.bot.send_video(chat_id, cached_file, caption=caption, parse_mode='HTML')
             await application.bot.delete_message(chat_id, progress_message_id)
+            if start_message_id:
+                try:
+                    await application.bot.delete_message(chat_id, start_message_id)
+                except Exception: pass
             return
         except Exception as e:
             logging.warning(f"Error sending from cache: {e}")
@@ -652,11 +658,14 @@ async def _execute_download(application: Application, chat_id, user_id, username
     application.bot_data['download_info'] = {'chat_id': chat_id, 'message_id': progress_message_id, 'is_downloading': True}
     progress_tasks[chat_id] = asyncio.create_task(update_progress_task(application, chat_id, progress_message_id))
 
-    temp_dir = tempfile.mkdtemp()
+    # Use configured output folder instead of temp directory
+    output_dir = OUTPUT_FOLDER if KEEP_FILES else tempfile.mkdtemp()
+    os.makedirs(output_dir, exist_ok=True)
+    
     try:
         ydl_opts = BASE_YTDL_OPTS.copy()
         ydl_opts.update({
-            'outtmpl': os.path.join(temp_dir, f"video_{video_id}.%(ext)s"),
+            'outtmpl': os.path.join(output_dir, f"%(upload_date)s - %(uploader)s - %(title)s [{video_id}].%(ext)s"),
             'quiet': True,
             'progress_hooks': [lambda d: download_progress_hook(d, application)],
         })
@@ -739,13 +748,26 @@ async def _execute_download(application: Application, chat_id, user_id, username
         # --- END ADMIN NOTIFICATION ---
 
         await save_file_id(video_id, quality, file_id, file_size, title, uploader, info.get('channel_url'))
+        logging.info(f"Deleting progress message {progress_message_id} for chat {chat_id}")
         await application.bot.delete_message(chat_id, progress_message_id)
+        if start_message_id:
+            logging.info(f"Deleting start message {start_message_id} for chat {chat_id}")
+            try:
+                await application.bot.delete_message(chat_id, start_message_id)
+            except Exception as e:
+                logging.error(f"Failed to delete start message: {e}")
     
     except Exception as e:
         logging.error(f"Error executing download: {e}", exc_info=True)
         await application.bot.edit_message_text(chat_id, progress_message_id, f'An error occurred: {e}')
+        if start_message_id:
+            try:
+                await application.bot.delete_message(chat_id, start_message_id)
+            except Exception: pass
     finally:
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        # Clean up temp directory only if KEEP_FILES is False
+        if not KEEP_FILES:
+            shutil.rmtree(output_dir, ignore_errors=True)
         if chat_id in active_downloads: del active_downloads[chat_id]
         if chat_id in progress_tasks:
             progress_tasks[chat_id].cancel()
@@ -760,14 +782,14 @@ async def queue_processor(application: Application):
             
             async with DOWNLOAD_SEMAPHORE:
                 logging.info(f"Starting processing for user_id={user_id}. Queue: {download_queue.qsize()}")
-                await application.bot.send_message(chat_id, "⏳ Your turn has come, starting download...")
+                start_msg = await application.bot.send_message(chat_id, "⏳ Your turn has come, starting download...")
                 if original_msg_id:
                     try: await application.bot.delete_message(chat_id, original_msg_id)
                     except Exception: pass
 
                 progress_msg = await application.bot.send_message(chat_id, "Downloading: 0%")
                 
-                await _execute_download(application, chat_id, user_id, username, url, quality, video_id, progress_msg.message_id)
+                await _execute_download(application, chat_id, user_id, username, url, quality, video_id, progress_msg.message_id, start_msg.message_id)
             download_queue.task_done()
         except Exception as e:
             logging.error(f"Error in queue processor: {e}", exc_info=True)
