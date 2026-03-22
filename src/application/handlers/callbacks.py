@@ -42,7 +42,7 @@ class CallbackHandlers(BaseHandler):
         # Route to specific handler based on callback data prefix
         if data.startswith('lang_'):
             await self.handle_language_selection(update, context)
-        elif data.startswith('quality_'):
+        elif data.startswith('dl_') or data.startswith('quality_'):
             await self.handle_quality_selection(update, context)
         elif data.startswith('confirm_'):
             await self.handle_confirmation(update, context)
@@ -102,10 +102,17 @@ class CallbackHandlers(BaseHandler):
         """
         query = update.callback_query
         user_id = query.from_user.id
-        data = query.data  # e.g., "quality_720_video123"
+        data = query.data  # e.g., "dl_720_video123" or "quality_720_video123"
         
-        # Parse quality and video ID
-        parts = data.replace('quality_', '').split('_')
+        # Parse quality and video ID (support both 'dl_' and 'quality_' prefixes)
+        if data.startswith('dl_'):
+            parts = data.replace('dl_', '').split('_')
+        elif data.startswith('quality_'):
+            parts = data.replace('quality_', '').split('_')
+        else:
+            await query.answer("Invalid selection", show_alert=True)
+            return
+        
         if len(parts) < 2:
             await query.answer("Invalid selection", show_alert=True)
             return
@@ -115,8 +122,11 @@ class CallbackHandlers(BaseHandler):
         
         logger.info(f"User {user_id} selected quality {quality} for video {video_id}")
         
-        # Acknowledge selection
-        await query.answer(f"Downloading in {quality}p...", show_alert=False)
+        # Acknowledge selection with appropriate message
+        if quality == 'audio':
+            await query.answer("Downloading audio only...", show_alert=False)
+        else:
+            await query.answer(f"Downloading in {quality}p...", show_alert=False)
         
         # Get video info if needed
         if self.youtube_service:
@@ -141,13 +151,21 @@ class CallbackHandlers(BaseHandler):
                 if self.queue_service:
                     await self.queue_service.add_to_queue(task)
                     
-                    # Notify user
-                    notification = (
-                        f"✅ <b>Download Started</b>\n\n"
-                        f"📹 {video.title}\n"
-                        f"🎬 Quality: {quality}p\n"
-                        f"⏳ You are in the queue..."
-                    )
+                    # Notify user with appropriate message for audio or video
+                    if quality == 'audio':
+                        notification = (
+                            f"✅ <b>Download Started</b>\n\n"
+                            f"📹 {video.title}\n"
+                            f"🎵 Quality: Audio Only\n"
+                            f"⏳ You are in the queue..."
+                        )
+                    else:
+                        notification = (
+                            f"✅ <b>Download Started</b>\n\n"
+                            f"📹 {video.title}\n"
+                            f"🎬 Quality: {quality}p\n"
+                            f"⏳ You are in the queue..."
+                        )
                     
                     await self.telegram_service.edit_message(
                         chat_id=query.message.chat_id,

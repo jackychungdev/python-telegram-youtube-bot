@@ -292,3 +292,51 @@ sqlite3.OperationalError: table authorized_users has no column named added_date
 2026-03-23 02:30:29 - application.handlers.callbacks - INFO - User 290569556 selected language: en
 2026-03-23 02:34:42 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
 2026-03-23 02:34:42 - telegram.ext.Application - INFO - Application.stop() complete
+2026-03-23 03:25:16 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 03:25:16 - __main__ - INFO - Database connected
+2026-03-23 03:25:16 - __main__ - INFO - Repositories initialized
+2026-03-23 03:25:16 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 03:25:16 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 03:25:17 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 03:25:17 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 03:25:17 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 03:25:17 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 03:25:17 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 03:25:17 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 03:25:17 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 03:25:17 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 03:25:17 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 03:25:17 - __main__ - INFO - All handlers registered
+2026-03-23 03:25:17 - __main__ - INFO - Bot is starting...
+2026-03-23 03:25:19 - telegram.ext.Application - INFO - Application started
+2026-03-23 03:25:33 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 03:25:33 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 03:25:37 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 03:25:40 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 03:25:40 - application.handlers.callbacks - WARNING - Unknown callback data: dl_audio_Ei5czjRfY6o
+2026-03-23 03:31:02 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 03:31:02 - application.handlers.callbacks - WARNING - Unknown callback data: dl_audio_Ei5czjRfY6o
+2026-03-23 03:54:58 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 03:54:58 - __main__ - INFO - Database connected
+2026-03-23 03:54:58 - __main__ - INFO - Repositories initialized
+2026-03-23 03:54:58 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 03:54:58 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 03:54:59 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 03:54:59 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 03:54:59 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 03:54:59 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 03:54:59 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 03:54:59 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 03:54:59 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 03:54:59 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 03:54:59 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 03:54:59 - __main__ - INFO - All handlers registered
+2026-03-23 03:54:59 - __main__ - INFO - Bot is starting...
+2026-03-23 03:55:00 - telegram.ext.Application - INFO - Application started
+2026-03-23 03:55:06 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 03:55:06 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 03:55:08 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 03:55:11 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 03:55:11 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
+2026-03-23 03:55:13 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 03:55:13 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)

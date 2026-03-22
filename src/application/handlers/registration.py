@@ -4,8 +4,7 @@ Handler Registration Utility
 Utility functions for registering all bot handlers with the application.
 """
 import logging
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, InlineQueryHandler, MessageHandler
-from telegram import filters
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, InlineQueryHandler, MessageHandler, filters
 
 from .commands import CommandHandlers
 from .callbacks import CallbackHandlers
