@@ -261,3 +261,34 @@ sqlite3.OperationalError: table authorized_users has no column named added_date
 2026-03-22 23:07:32 - __main__ - INFO - Bot is starting...
 2026-03-22 23:07:33 - telegram.ext.Application - INFO - Application started
 2026-03-22 23:08:51 - __main__ - INFO - Bot stopped by user
+2026-03-23 02:29:16 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 02:29:16 - __main__ - INFO - Database connected
+2026-03-23 02:29:16 - __main__ - INFO - Repositories initialized
+2026-03-23 02:29:16 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 02:29:16 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 02:29:17 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 02:29:17 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 02:29:17 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 02:29:17 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 02:29:17 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 02:29:17 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 02:29:17 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 02:29:17 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 02:29:17 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 02:29:17 - __main__ - INFO - All handlers registered
+2026-03-23 02:29:17 - __main__ - INFO - Bot is starting...
+2026-03-23 02:29:18 - telegram.ext.Application - INFO - Application started
+2026-03-23 02:30:01 - application.handlers.commands - INFO - /start command from user 290569556 (jacky899)
+2026-03-23 02:30:01 - application.handlers.base_handler - INFO - User 290569556 performed action: start
+2026-03-23 02:30:01 - application.handlers.base_handler - ERROR - Failed to log user action: no such table: users
+2026-03-23 02:30:11 - application.handlers.commands - INFO - /status command from user 290569556
+2026-03-23 02:30:11 - application.handlers.base_handler - INFO - User 290569556 performed action: status
+2026-03-23 02:30:11 - application.services.cache_service - ERROR - Failed to get cache stats: no such table: uploaded_videos
+2026-03-23 02:30:18 - application.handlers.commands - INFO - /help command from user 290569556
+2026-03-23 02:30:18 - application.handlers.base_handler - INFO - User 290569556 performed action: help
+2026-03-23 02:30:26 - application.handlers.commands - INFO - /lang command from user 290569556
+2026-03-23 02:30:26 - application.handlers.base_handler - INFO - User 290569556 performed action: lang
+2026-03-23 02:30:29 - application.handlers.callbacks - INFO - Callback received from user 290569556: lang_en
+2026-03-23 02:30:29 - application.handlers.callbacks - INFO - User 290569556 selected language: en
+2026-03-23 02:34:42 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2026-03-23 02:34:42 - telegram.ext.Application - INFO - Application.stop() complete

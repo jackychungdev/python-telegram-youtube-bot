@@ -321,3 +321,140 @@ class CommandHandlers(BaseHandler):
                 text=status_text,
                 parse_mode='HTML'
             )
+    
+    async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle regular text messages containing YouTube links.
+        
+        Args:
+            update: Telegram update
+            context: Telegram context
+        """
+        if not update.message or not update.effective_user:
+            return
+        
+        user_id = update.effective_user.id
+        chat_id = update.effective_chat.id
+        message_text = update.message.text.strip()
+        
+        # Check if it's a YouTube URL
+        if not self._is_youtube_url(message_text):
+            return
+        
+        logger.info(f"YouTube link received from user {user_id}: {message_text}")
+        await self.log_user_action(user_id, 'youtube_link')
+        
+        # Check authorization
+        if not await self.check_authorization(user_id):
+            await self.send_error_message(
+                chat_id,
+                "🔒 You are not authorized to use this bot. Please contact the admin."
+            )
+            return
+        
+        # Check rate limit
+        user_context = await self.get_user_context(user_id)
+        downloads_count = user_context.get('downloads_in_hour', 0) if user_context else 0
+        
+        if downloads_count >= 10:
+            await self.send_error_message(
+                chat_id,
+                "⚠️ You've reached your download limit for this hour (10 downloads). Please wait before downloading again."
+            )
+            return
+        
+        try:
+            # Send processing message
+            processing_msg = await self.telegram_service.send_message(
+                chat_id=chat_id,
+                text="🔄 <b>Processing YouTube link...</b>\n\nPlease wait while I fetch video information.",
+                parse_mode='HTML'
+            )
+            
+            # Get video info
+            video = await self.youtube_service.get_video_info(message_text)
+            
+            # Delete processing message
+            try:
+                await processing_msg.delete()
+            except:
+                pass
+            
+            # Create quality selection keyboard
+            keyboard = [
+                [
+                    InlineKeyboardButton("🎬 4K (2160p)", callback_data=f"dl_2160_{video.video_id}"),
+                    InlineKeyboardButton("🎬 2K (1440p)", callback_data=f"dl_1440_{video.video_id}")
+                ],
+                [
+                    InlineKeyboardButton("🎬 Full HD (1080p)", callback_data=f"dl_1080_{video.video_id}"),
+                    InlineKeyboardButton("🎬 HD (720p)", callback_data=f"dl_720_{video.video_id}")
+                ],
+                [
+                    InlineKeyboardButton("📱 SD (480p)", callback_data=f"dl_480_{video.video_id}"),
+                    InlineKeyboardButton("📱 SD (360p)", callback_data=f"dl_360_{video.video_id}")
+                ],
+                [
+                    InlineKeyboardButton("🎵 Audio Only", callback_data=f"dl_audio_{video.video_id}")
+                ]
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            
+            # Send video info with quality options
+            duration_str = self._format_duration(video.duration)
+            await self.telegram_service.send_message(
+                chat_id=chat_id,
+                text=(
+                    f"📹 <b>{video.title}</b>\n\n"
+                    f"🎬 Channel: {video.uploader}\n"
+                    f"⏱ Duration: {duration_str}\n"
+                    f"👁 Views: {video.view_count:,}\n\n"
+                    f"<b>Select download quality:</b>"
+                ),
+                parse_mode='HTML',
+                reply_markup=reply_markup
+            )
+            
+        except Exception as e:
+            logger.error(f"Failed to process YouTube link: {e}", exc_info=True)
+            await self.send_error_message(
+                chat_id,
+                f"❌ Failed to process this video. Please check the link and try again.\n\nError: {str(e)}"
+            )
+    
+    def _is_youtube_url(self, text: str) -> bool:
+        """Check if text is a YouTube URL.
+        
+        Args:
+            text: Text to check
+            
+        Returns:
+            True if YouTube URL
+        """
+        youtube_patterns = [
+            'youtube.com/watch',
+            'youtu.be/',
+            'youtube.com/shorts/',
+        ]
+        
+        return any(pattern in text for pattern in youtube_patterns)
+    
+    @staticmethod
+    def _format_duration(seconds: float) -> str:
+        """Format duration in seconds to MM:SS or HH:MM:SS.
+        
+        Args:
+            seconds: Duration in seconds
+            
+        Returns:
+            Formatted duration string
+        """
+        if not seconds:
+            return "0:00"
+        
+        minutes, secs = divmod(int(seconds), 60)
+        hours, minutes = divmod(minutes, 60)
+        
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{secs:02d}"
+        else:
+            return f"{minutes}:{secs:02d}"

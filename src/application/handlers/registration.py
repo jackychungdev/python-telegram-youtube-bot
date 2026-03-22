@@ -4,7 +4,8 @@ Handler Registration Utility
 Utility functions for registering all bot handlers with the application.
 """
 import logging
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, InlineQueryHandler
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, InlineQueryHandler, MessageHandler
+from telegram import filters
 
 from .commands import CommandHandlers
 from .callbacks import CallbackHandlers
@@ -34,6 +35,9 @@ def register_all_handlers(application: Application, services: dict):
     application.add_handler(CommandHandler('download', command_handlers.handle))
     application.add_handler(CommandHandler('help', command_handlers.handle))
     application.add_handler(CommandHandler('status', command_handlers.handle))
+    
+    # Register message handler for YouTube links (must come after command handlers)
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, command_handlers.handle_message))
     
     logger.info("Command handlers registered")
     

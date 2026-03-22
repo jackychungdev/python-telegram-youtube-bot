@@ -5,3 +5,13 @@ downloads/*
 *.json
 __pycache__/*
 users.db
+src/tests/unit/__pycache__/*
+bot.log
+users.db
+src/tests/unit/__pycache__/test_authorization_flow.cpython-312-pytest-9.0.2.pyc
+src/application/handlers/__pycache__/commands.cpython-312.pyc
+src/application/handlers/__pycache__/commands.cpython-312.pyc
+src/tests/unit/__pycache__/test_authorization_flow.cpython-312-pytest-9.0.2.pyc
+src/tests/unit/__pycache__/test_handlers.cpython-312-pytest-9.0.2.pyc
+src/tests/integration/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc
+src/tests/integration/__pycache__/test_integration.cpython-312-pytest-9.0.2.pyc
