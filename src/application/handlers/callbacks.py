@@ -149,6 +149,70 @@ class CallbackHandlers(BaseHandler):
                 
                 # Add to queue
                 if self.queue_service:
+                    # Register execution callback to actually perform the download
+                    async def execute_download(task: DownloadTask):
+                        """Execute the download using download service."""
+                        try:
+                            logger.info(f"Executing download for task {task.task_id}: {task.video_id}")
+                            
+                            # Execute download
+                            downloaded_file = await self.download_service.execute_download(
+                                task=task,
+                                quality=task.quality
+                            )
+                            
+                            logger.info(f"Download completed: {downloaded_file}")
+                            
+                            # Mark as processing (download complete, now uploading)
+                            task.mark_processing()
+                            
+                            # Send file to user
+                            if self.telegram_service:
+                                # Get video info for metadata
+                                video_info = await self.youtube_service.get_video_info(video.url)
+                                
+                                if task.quality == 'audio':
+                                    # Send as audio
+                                    await self.telegram_service.send_audio(
+                                        chat_id=task.chat_id,
+                                        audio_path=str(downloaded_file),
+                                        title=video_info.title,
+                                        performer=video_info.uploader,
+                                        caption=f"🎵 {video_info.title} - {video_info.uploader}"
+                                    )
+                                else:
+                                    # Send as video
+                                    await self.telegram_service.send_video(
+                                        chat_id=task.chat_id,
+                                        video_path=str(downloaded_file),
+                                        title=video_info.title
+                                    )
+                                
+                                # Notify completion
+                                await self.telegram_service.notify_user(
+                                    user_id=task.user_id,
+                                    message=f"✅ Download completed: {video_info.title}",
+                                    notification_type='success'
+                                )
+                            
+                            task.mark_completed()
+                            
+                        except Exception as e:
+                            logger.error(f"Download execution failed: {e}", exc_info=True)
+                            task.mark_failed(str(e))
+                            
+                            # Notify user of error
+                            if self.telegram_service:
+                                await self.telegram_service.notify_user(
+                                    user_id=task.user_id,
+                                    message=f"❌ Download failed: {str(e)}",
+                                    notification_type='error'
+                                )
+                    
+                    # Register the callback with the queue service
+                    self.queue_service.register_execution_callback(task.task_id, execute_download)
+                    
+                    # Add task to queue
                     await self.queue_service.add_to_queue(task)
                     
                     # Notify user with appropriate message for audio or video

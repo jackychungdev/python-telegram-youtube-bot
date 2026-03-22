@@ -93,6 +93,12 @@ def main():
         cache_service = CacheService(video_repo)
         queue_service = QueueService()
         
+        # Start the queue worker background task
+        import asyncio
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(queue_service.start_worker())
+        logger.info("Queue worker started")
+        
         # Create Telegram application
         application = Application.builder().token(bot_token).build()
         
@@ -124,8 +130,17 @@ def main():
         
     except KeyboardInterrupt:
         logger.info("Bot stopped by user")
+        # Stop queue worker
+        if 'queue_service' in locals():
+            asyncio.get_event_loop().run_until_complete(queue_service.stop_worker())
     except Exception as e:
         logger.error(f"Bot error: {e}", exc_info=True)
+        # Stop queue worker on error
+        if 'queue_service' in locals():
+            try:
+                asyncio.get_event_loop().run_until_complete(queue_service.stop_worker())
+            except:
+                pass
         raise
 
 

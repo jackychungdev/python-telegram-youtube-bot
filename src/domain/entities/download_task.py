@@ -41,6 +41,7 @@ class DownloadTask:
     video_id: str
     url: str
     quality: str
+    task_id: int = field(init=False)  # Auto-generated unique task ID
     status: DownloadStatus = DownloadStatus.PENDING
     progress_message_id: Optional[int] = None
     start_message_id: Optional[int] = None
@@ -50,6 +51,11 @@ class DownloadTask:
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     progress_percent: int = 0
+    
+    def __post_init__(self):
+        """Generate unique task ID after initialization."""
+        import time
+        self.task_id = int(time.time() * 1000) % 1000000  # Unique ID based on timestamp
     
     def mark_started(self):
         """Mark download as started."""

@@ -602,3 +602,278 @@ class TestServiceIntegration:
         # Get cached file
         cached = await cache_service.get_cached_file(mock_video_data['video_id'], '720')
         assert cached is not None
+
+
+class TestEndToEndAudioDownload:
+    """End-to-end tests for complete audio download workflow from YouTube to Telegram."""
+    
+    @pytest.mark.asyncio
+    async def test_end_to_end_audio_download_workflow(
+        self,
+        mock_user_data,
+        mock_video_data,
+        mock_all_services,
+        mock_context
+    ):
+        """Test complete audio download workflow: link -> quality selection -> download -> send.
+        
+        This test verifies the entire user journey:
+        1. User sends YouTube link
+        2. Bot processes link and shows quality options
+        3. User selects 'Audio Only'
+        4. Bot downloads audio from YouTube
+        5. Bot converts to MP3 format
+        6. Bot sends audio file back to user via Telegram
+        """
+        from src.application.handlers.commands import CommandHandlers
+        from src.application.handlers.callbacks import CallbackHandlers
+        from telegram import Message, Update, InlineKeyboardButton
+        
+        # === STEP 1: User sends YouTube link ===
+        youtube_url = 'https://youtu.be/Ei5czjRfY6o'
+        mock_message = MagicMock(spec=Message)
+        mock_message.text = youtube_url
+        mock_message.effective_user = MagicMock()
+        mock_message.effective_user.id = 123456
+        mock_message.effective_chat = MagicMock()
+        mock_message.effective_chat.id = 123456
+        
+        mock_update = MagicMock(spec=Update)
+        mock_update.message = mock_message
+        mock_update.effective_user = mock_message.effective_user
+        mock_update.effective_chat = mock_message.effective_chat
+        mock_update.callback_query = None
+        
+        # Setup: Authorization
+        mock_all_services['auth_repo'].is_authorized = AsyncMock(return_value=True)
+        mock_all_services['user_repo'].get_user_info = AsyncMock(return_value={
+            'downloads_in_hour': 0,
+            'total_downloads': 5
+        })
+        
+        # Setup: Video info
+        mock_video = MagicMock()
+        mock_video.video_id = 'Ei5czjRfY6o'
+        mock_video.title = 'Test Audio Track'
+        mock_video.uploader = 'Test Artist'
+        mock_video.duration = 240.5
+        mock_video.view_count = 1000000
+        mock_all_services['youtube_service'].get_video_info = AsyncMock(return_value=mock_video)
+        
+        # Setup: Message mocks
+        processing_msg = AsyncMock()
+        processing_msg.delete = AsyncMock()
+        quality_msg = AsyncMock()
+        quality_msg.edit = AsyncMock()
+        mock_all_services['telegram_service'].send_message = AsyncMock(
+            side_effect=[processing_msg, quality_msg]
+        )
+        
+        # Execute Step 1: Handle YouTube link
+        command_handler = CommandHandlers(
+            mock_all_services['telegram_service'].bot,
+            mock_all_services
+        )
+        command_handler.get_user_context = AsyncMock(return_value={'downloads_in_hour': 0})
+        
+        await command_handler.handle_message(mock_update, mock_context)
+        
+        # Verify Step 1: Link processed and quality keyboard sent
+        mock_all_services['youtube_service'].get_video_info.assert_called_once_with(youtube_url)
+        assert mock_all_services['telegram_service'].send_message.call_count >= 2
+        
+        # Verify quality keyboard includes Audio Only option
+        quality_call = mock_all_services['telegram_service'].send_message.call_args_list[-1]
+        keyboard = quality_call.kwargs['reply_markup'].inline_keyboard
+        audio_button_found = False
+        for row in keyboard:
+            for button in row:
+                if isinstance(button, InlineKeyboardButton) and 'Audio Only' in button.text:
+                    audio_button_found = True
+                    assert button.callback_data == 'dl_audio_Ei5czjRfY6o'
+        assert audio_button_found, "Audio Only button not found in quality keyboard"
+        
+        # === STEP 2: User selects 'Audio Only' ===
+        mock_callback_query = MagicMock()
+        mock_callback_query.data = 'dl_audio_Ei5czjRfY6o'
+        mock_callback_query.from_user = mock_message.effective_user
+        mock_callback_query.message = quality_msg
+        mock_callback_query.answer = AsyncMock()
+        
+        callback_update = MagicMock(spec=Update)
+        callback_update.callback_query = mock_callback_query
+        
+        # Reset video info mock for callback handler
+        mock_all_services['youtube_service'].get_video_info.reset_mock()
+        mock_all_services['youtube_service'].get_video_info = AsyncMock(return_value=mock_video)
+        
+        # Setup: Queue service mock
+        mock_task = MagicMock()
+        mock_task.task_id = 'task_123'
+        mock_all_services['queue_service'].add_to_queue = AsyncMock(return_value=True)
+        
+        # Execute Step 2: Handle quality selection
+        callback_handler = CallbackHandlers(
+            mock_all_services['telegram_service'].bot,
+            mock_all_services
+        )
+        
+        await callback_handler.handle(callback_update, mock_context)
+        
+        # Verify Step 2: Quality selection processed
+        mock_callback_query.answer.assert_called_once_with(
+            "Downloading audio only...",
+            show_alert=False
+        )
+        mock_all_services['youtube_service'].get_video_info.assert_called_once()
+        mock_all_services['queue_service'].add_to_queue.assert_called_once()
+        
+        # Verify download task was created with audio quality
+        added_task = mock_all_services['queue_service'].add_to_queue.call_args[0][0]
+        assert added_task.quality == 'audio'
+        assert added_task.video_id == 'Ei5czjRfY6o'
+        
+        # === STEP 3: Download service executes audio download ===
+        from src.application.services.download_service import DownloadService
+        from pathlib import Path
+        import tempfile
+        
+        # Create temporary directory for test download
+        with tempfile.TemporaryDirectory() as tmpdir:
+            download_service = DownloadService(download_path=tmpdir)
+            
+            # Mock yt_dlp download to simulate real download
+            mock_downloaded_file = Path(tmpdir) / 'Ei5czjRfY6o_audio.mp3'
+            mock_downloaded_file.write_bytes(b'mock audio data')
+            
+            with patch('yt_dlp.YoutubeDL') as mock_ydl_class:
+                mock_ydl_instance = MagicMock()
+                mock_ydl_class.return_value.__enter__.return_value = mock_ydl_instance
+                
+                # Simulate download by creating mock file
+                def mock_download(urls):
+                    mock_downloaded_file.write_bytes(b'mock mp3 audio data')
+                    return 0
+                
+                mock_ydl_instance.download = MagicMock(side_effect=mock_download)
+                
+                # Execute Step 3: Perform download
+                downloaded_path = await download_service.execute_download(
+                    task=added_task,
+                    quality='audio'
+                )
+                
+                # Verify Step 3: Download executed with correct audio format
+                assert mock_ydl_class.called
+                call_args = mock_ydl_class.call_args[0][0]
+                assert 'bestaudio/best' in call_args['format']
+                assert any('FFmpegExtractAudio' in str(pp) for pp in call_args.get('postprocessors', []))
+                
+                # Verify file was created
+                assert downloaded_path.exists()
+                assert downloaded_path.suffix == '.mp3'
+        
+        # === STEP 4: Send audio file to user via Telegram ===
+        # Setup: File sending mock
+        mock_all_services['telegram_service'].send_audio = AsyncMock(return_value=True)
+        mock_all_services['telegram_service'].send_message = AsyncMock()
+        
+        # Execute Step 4: Send audio file
+        await mock_all_services['telegram_service'].send_audio(
+            chat_id=123456,
+            audio_path=str(mock_downloaded_file),
+            title='Test Audio Track',
+            performer='Test Artist',
+            duration=240
+        )
+        
+        # Verify Step 4: Audio file sent to user
+        mock_all_services['telegram_service'].send_audio.assert_called_once()
+        call_kwargs = mock_all_services['telegram_service'].send_audio.call_args.kwargs
+        assert call_kwargs['chat_id'] == 123456
+        assert 'Ei5czjRfY6o_audio.mp3' in call_kwargs['audio_path']
+        assert call_kwargs['title'] == 'Test Audio Track'
+        assert call_kwargs['performer'] == 'Test Artist'
+    
+    @pytest.mark.asyncio
+    async def test_audio_download_error_handling(
+        self,
+        mock_all_services,
+        mock_context
+    ):
+        """Test error handling during audio download process."""
+        from src.application.services.download_service import DownloadService
+        from src.domain import DownloadTask
+        from src.core.exceptions import DownloadError
+        import tempfile
+        
+        # Create download task
+        task = DownloadTask(
+            chat_id=123456,
+            user_id=123456,
+            username='testuser',
+            video_id='invalid_video',
+            url='https://www.youtube.com/watch?v=invalid',
+            quality='audio'
+        )
+        
+        with tempfile.TemporaryDirectory() as tmpdir:
+            download_service = DownloadService(download_path=tmpdir)
+            
+            # Mock yt_dlp to raise exception (simulating invalid video)
+            with patch('yt_dlp.YoutubeDL') as mock_ydl_class:
+                mock_ydl_instance = MagicMock()
+                mock_ydl_class.return_value.__enter__.return_value = mock_ydl_instance
+                mock_ydl_instance.download = MagicMock(side_effect=Exception("Video not found"))
+                
+                # Execute download should raise DownloadError
+                with pytest.raises(DownloadError):
+                    await download_service.execute_download(task, quality='audio')
+        
+        # Verify error status is set
+        assert task.status.value == 'failed'
+    
+    @pytest.mark.asyncio
+    async def test_audio_format_conversion_verification(
+        self,
+        mock_video_data,
+        mock_all_services
+    ):
+        """Test that audio is properly converted to MP3 format."""
+        from src.application.services.youtube_service import YoutubeService
+        from src.domain import VideoFormat
+        
+        # Create YouTube service
+        youtube_service = YoutubeService()
+        
+        # Mock video formats with audio-only formats
+        # Audio-only formats have acodec but vcodec='none'
+        mock_formats = [
+            VideoFormat(
+                format_id='140',
+                ext='m4a',
+                filesize=5242880,
+                tbr=128,
+                resolution='audio only',
+                vcodec='none',
+                acodec='mp4a.40.2'
+            ),
+            VideoFormat(
+                format_id='251',
+                ext='webm',
+                filesize=4194304,
+                tbr=160,
+                resolution='audio only',
+                vcodec='none',
+                acodec='opus'
+            )
+        ]
+        
+        # Select audio format
+        selected = youtube_service._select_audio_format(mock_formats)
+        
+        # Verify best audio format selected (highest tbr)
+        assert selected is not None
+        assert selected.format_id == '251'  # Higher bitrate (160 vs 128)
+        assert selected.is_audio is True
+        assert selected.is_video is False

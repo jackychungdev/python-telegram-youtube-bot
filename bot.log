@@ -340,3 +340,742 @@ sqlite3.OperationalError: table authorized_users has no column named added_date
 2026-03-23 03:55:11 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
 2026-03-23 03:55:13 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
 2026-03-23 03:55:13 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)
+2026-03-23 03:56:18 - __main__ - INFO - Bot stopped by user
+2026-03-23 04:08:38 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:08:38 - __main__ - INFO - Database connected
+2026-03-23 04:08:38 - __main__ - INFO - Repositories initialized
+2026-03-23 04:08:38 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:08:38 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:08:38 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:08:38 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:08:38 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:08:38 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:08:38 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:08:38 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:08:38 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:08:38 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:08:38 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:08:38 - __main__ - INFO - All handlers registered
+2026-03-23 04:08:38 - __main__ - INFO - Bot is starting...
+2026-03-23 04:08:39 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:08:46 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 04:08:46 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 04:08:48 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:08:56 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 04:08:56 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
+2026-03-23 04:08:58 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:08:58 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)
+2026-03-23 04:11:10 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:11:10 - __main__ - INFO - Database connected
+2026-03-23 04:11:10 - __main__ - INFO - Repositories initialized
+2026-03-23 04:11:10 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:11:10 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:11:10 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 04:11:10 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 04:11:10 - __main__ - INFO - Queue worker started
+2026-03-23 04:11:11 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:11:11 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:11:11 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:11:11 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:11:11 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:11:11 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:11:11 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:11:11 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:11:11 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:11:11 - __main__ - INFO - All handlers registered
+2026-03-23 04:11:11 - __main__ - INFO - Bot is starting...
+2026-03-23 04:11:12 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:11:12 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:16 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:18 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:22 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:24 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:30 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:32 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:36 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:11:39 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:27 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:12:27 - __main__ - INFO - Database connected
+2026-03-23 04:12:27 - __main__ - INFO - Repositories initialized
+2026-03-23 04:12:27 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:12:27 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:12:27 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 04:12:27 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 04:12:27 - __main__ - INFO - Queue worker started
+2026-03-23 04:12:28 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:12:28 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:12:28 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:12:28 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:12:28 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:12:28 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:12:28 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:12:28 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:12:28 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:12:28 - __main__ - INFO - All handlers registered
+2026-03-23 04:12:28 - __main__ - INFO - Bot is starting...
+2026-03-23 04:12:29 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:12:30 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:34 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:35 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:40 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:42 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:47 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:50 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:53 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:12:57 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-23 04:13:11 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:13:11 - __main__ - INFO - Database connected
+2026-03-23 04:13:11 - __main__ - INFO - Repositories initialized
+2026-03-23 04:13:11 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:13:11 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:13:11 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 04:13:11 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 04:13:11 - __main__ - INFO - Queue worker started
+2026-03-23 04:13:12 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:13:12 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:13:12 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:13:12 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:13:12 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:13:12 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:13:12 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:13:12 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:13:12 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:13:12 - __main__ - INFO - All handlers registered
+2026-03-23 04:13:12 - __main__ - INFO - Bot is starting...
+2026-03-23 04:13:13 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:13:15 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 04:13:15 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 04:13:17 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:13:20 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 04:13:20 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
+2026-03-23 04:13:21 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:13:21 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)
+2026-03-23 04:13:21 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-21' coro=<QueueService._execute_with_semaphore() done, defined at C:\workspace\python-telegram-youtube-bot\src\application\services\queue_service.py:213> exception=AttributeError("'DownloadTask' object has no attribute 'task_id'")>
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\application\services\queue_service.py", line 220, in _execute_with_semaphore
+    self._active_tasks[task.task_id] = task
+                       ^^^^^^^^^^^^
+AttributeError: 'DownloadTask' object has no attribute 'task_id'
+2026-03-23 04:14:07 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:14:07 - __main__ - INFO - Database connected
+2026-03-23 04:14:07 - __main__ - INFO - Repositories initialized
+2026-03-23 04:14:07 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:14:07 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:14:07 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 04:14:07 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 04:14:07 - __main__ - INFO - Queue worker started
+2026-03-23 04:14:07 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:14:07 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:14:07 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:14:07 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:14:07 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:14:07 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:14:07 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:14:07 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:14:07 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:14:07 - __main__ - INFO - All handlers registered
+2026-03-23 04:14:07 - __main__ - INFO - Bot is starting...
+2026-03-23 04:14:09 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:14:15 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 04:14:15 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 04:14:17 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:14:20 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 04:14:20 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
+2026-03-23 04:14:22 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:14:22 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)
+2026-03-23 04:14:22 - application.services.queue_service - INFO - Executing task: Ei5czjRfY6o (quality: audio)
+2026-03-23 04:14:22 - application.services.queue_service - INFO - Task completed: Ei5czjRfY6o
+2026-03-23 04:19:47 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:19:47 - __main__ - INFO - Database connected
+2026-03-23 04:19:47 - __main__ - INFO - Repositories initialized
+2026-03-23 04:19:47 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:19:47 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:19:47 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 04:19:47 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 04:19:47 - __main__ - INFO - Queue worker started
+2026-03-23 04:19:48 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:19:48 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:19:48 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:19:48 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:19:48 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:19:48 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:19:48 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:19:48 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:19:48 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:19:48 - __main__ - INFO - All handlers registered
+2026-03-23 04:19:48 - __main__ - INFO - Bot is starting...
+2026-03-23 04:19:49 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:20:01 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 04:20:01 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 04:20:03 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:20:05 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 04:20:05 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
+2026-03-23 04:20:07 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:20:07 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)
+2026-03-23 04:20:07 - application.services.queue_service - INFO - Executing task: Ei5czjRfY6o (quality: audio)
+2026-03-23 04:20:07 - application.handlers.callbacks - INFO - Executing download for task 807282: Ei5czjRfY6o
+2026-03-23 04:20:07 - application.services.download_service - INFO - Starting download: Ei5czjRfY6o (quality: audio)
+2026-03-23 04:20:15 - application.services.download_service - INFO - Download completed: downloads\Ei5czjRfY6o_audio.mp3
+2026-03-23 04:20:15 - application.handlers.callbacks - INFO - Download completed: downloads\Ei5czjRfY6o_audio.mp3
+2026-03-23 04:20:16 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:20:16 - application.handlers.callbacks - ERROR - Download execution failed: TelegramService.send_audio() got an unexpected keyword argument 'duration'
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\application\handlers\callbacks.py", line 176, in execute_download
+    await self.telegram_service.send_audio(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: TelegramService.send_audio() got an unexpected keyword argument 'duration'
+2026-03-23 04:20:17 - application.services.queue_service - INFO - Task completed: Ei5czjRfY6o
+2026-03-23 04:21:21 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 04:21:21 - __main__ - INFO - Database connected
+2026-03-23 04:21:21 - __main__ - INFO - Repositories initialized
+2026-03-23 04:21:21 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 04:21:21 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 04:21:21 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 04:21:21 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 04:21:21 - __main__ - INFO - Queue worker started
+2026-03-23 04:21:22 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 04:21:22 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 04:21:22 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 04:21:22 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 04:21:22 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 04:21:22 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 04:21:22 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 04:21:22 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 04:21:22 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 04:21:22 - __main__ - INFO - All handlers registered
+2026-03-23 04:21:22 - __main__ - INFO - Bot is starting...
+2026-03-23 04:21:23 - telegram.ext.Application - INFO - Application started
+2026-03-23 04:21:37 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Ei5czjRfY6o?si=8K-InHR3643OmBfM
+2026-03-23 04:21:37 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 04:21:40 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:21:43 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Ei5czjRfY6o
+2026-03-23 04:21:43 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Ei5czjRfY6o
+2026-03-23 04:21:45 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:21:45 - application.services.queue_service - INFO - Task added to queue: Ei5czjRfY6o (queue size: 1)
+2026-03-23 04:21:45 - application.services.queue_service - INFO - Executing task: Ei5czjRfY6o (quality: audio)
+2026-03-23 04:21:45 - application.handlers.callbacks - INFO - Executing download for task 905028: Ei5czjRfY6o
+2026-03-23 04:21:45 - application.services.download_service - INFO - Starting download: Ei5czjRfY6o (quality: audio)
+2026-03-23 04:21:52 - application.services.download_service - INFO - Download completed: downloads\Ei5czjRfY6o_audio.mp3
+2026-03-23 04:21:52 - application.handlers.callbacks - INFO - Download completed: downloads\Ei5czjRfY6o_audio.mp3
+2026-03-23 04:21:53 - application.services.youtube_service - INFO - Fetched video info: 九三 《搁浅》 cover | 的对白，是回不去的曾经。 by 九三
+2026-03-23 04:22:15 - application.services.telegram_service - INFO - Audio sent to 290569556: 九三 《搁浅》 cover | 的对白，是回不去的曾经。
+2026-03-23 04:22:16 - application.services.queue_service - INFO - Task completed: Ei5czjRfY6o
+2026-03-23 04:23:26 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/m2ySZydlYFg?si=qqyYVZ11Ypdx_liy
+2026-03-23 04:23:26 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 04:23:28 - application.services.youtube_service - INFO - Fetched video info: CTING COVER | 怎麼了 | 周興哲 by SzeTingWong黃詩婷
+2026-03-23 04:23:30 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_m2ySZydlYFg
+2026-03-23 04:23:30 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video m2ySZydlYFg
+2026-03-23 04:23:31 - application.services.youtube_service - INFO - Fetched video info: CTING COVER | 怎麼了 | 周興哲 by SzeTingWong黃詩婷
+2026-03-23 04:23:31 - application.services.queue_service - INFO - Task added to queue: m2ySZydlYFg (queue size: 1)
+2026-03-23 04:23:32 - application.services.queue_service - INFO - Executing task: m2ySZydlYFg (quality: audio)
+2026-03-23 04:23:32 - application.handlers.callbacks - INFO - Executing download for task 11899: m2ySZydlYFg
+2026-03-23 04:23:32 - application.services.download_service - INFO - Starting download: m2ySZydlYFg (quality: audio)
+2026-03-23 04:23:38 - application.services.download_service - INFO - Download completed: downloads\m2ySZydlYFg_audio.mp3
+2026-03-23 04:23:38 - application.handlers.callbacks - INFO - Download completed: downloads\m2ySZydlYFg_audio.mp3
+2026-03-23 04:23:39 - application.services.youtube_service - INFO - Fetched video info: CTING COVER | 怎麼了 | 周興哲 by SzeTingWong黃詩婷
+2026-03-23 04:24:00 - application.services.telegram_service - ERROR - Failed to send audio to 290569556: Timed out
