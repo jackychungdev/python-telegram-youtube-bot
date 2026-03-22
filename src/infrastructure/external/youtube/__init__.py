@@ -1,7 +1,10 @@
 """
-YouTube integration module
+YouTube Integration Module
 
-yt-dlp wrapper and YouTube-specific operations.
+External service integrations for YouTube operations.
 """
+from .quality_selector import QualitySelector
 
-__all__ = []
+__all__ = [
+    'QualitySelector',
+]
