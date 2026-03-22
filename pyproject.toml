@@ -1,3 +1,8 @@
+"""
+Pytest Configuration
+
+Configuration for pytest test runner.
+"""
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = [
@@ -7,19 +12,27 @@ addopts = [
     "--strict-config",
     "--cov=src",
     "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--asyncio-mode=auto",
 ]
 testpaths = [
-    "src/tests",
+    "src/tests/unit",
+    "src/tests/integration",
 ]
 python_files = [
     "test_*.py",
-    "*_test.py",
 ]
 python_classes = [
     "Test*",
 ]
 python_functions = [
     "test_*",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests",
+    "unit: marks unit tests",
 ]
 asyncio_mode = "auto"
 
@@ -29,6 +42,8 @@ source = ["src"]
 omit = [
     "*/tests/*",
     "*/__init__.py",
+    "*/fixtures/*",
+    "*/conftest.py",
 ]
 
 [tool.coverage.report]
@@ -37,6 +52,12 @@ exclude_lines = [
     "def __repr__",
     "raise AssertionError",
     "raise NotImplementedError",
-    "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+    "@abstractmethod",
 ]
+show_missing = true
+fail_under = 70
+
+[tool.coverage.html]
+directory = "coverage_html_report"
