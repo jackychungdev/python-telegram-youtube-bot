@@ -6,6 +6,7 @@ Repository for user-related database operations with full CRUD support.
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 from .base_repository import BaseRepository
+from ..database import Database
 
 
 class UserRepository(BaseRepository):
@@ -18,13 +19,14 @@ class UserRepository(BaseRepository):
     - Activity monitoring
     """
     
-    def __init__(self, db_path: str = 'users.db'):
+    def __init__(self, db: Database):
         """Initialize user repository.
         
         Args:
-            db_path: Path to SQLite database file
+            db: Database instance for connection management
         """
-        super().__init__(db_path)
+        super().__init__(db.db_path)
+        self.db = db
         self._tables_created = False
     
     async def initialize(self):

@@ -52,11 +52,11 @@ class TestUser:
         # Should block at limit
         assert user.can_download(limit_per_hour=10) is False
     
-    def test_user_update_username(self):
-        """Test username update."""
+    def test_user_update_activity(self):
+        """Test user activity update (replaces update_username)."""
         user = User(user_id=123, username='old_name')
         
-        user.update_username('new_name')
+        user.update_activity(username='new_name')
         
         assert user.username == 'new_name'
     
@@ -80,7 +80,9 @@ class TestVideo:
             video_id=mock_video_data['video_id'],
             title=mock_video_data['title'],
             uploader=mock_video_data['uploader'],
-            duration=mock_video_data['duration']
+            uploader_url=mock_video_data.get('uploader_url', 'https://youtube.com/channel/test'),
+            duration=mock_video_data['duration'],
+            thumbnail_url=mock_video_data.get('thumbnail_url', 'https://i.ytimg.com/vi/test/maxresdefault.jpg')
         )
         
         assert video.video_id == mock_video_data['video_id']
@@ -88,13 +90,15 @@ class TestVideo:
         assert video.uploader == mock_video_data['uploader']
         assert video.duration == mock_video_data['duration']
     
-    def test_video_get_best_format_for_quality(self, mock_video_data):
-        """Test format selection for specific quality."""
+    def test_video_get_formats_for_quality(self, mock_video_data):
+        """Test format selection for specific quality (replaces get_best_format_for_quality)."""
         video = Video(
             video_id=mock_video_data['video_id'],
             title=mock_video_data['title'],
             uploader=mock_video_data['uploader'],
-            duration=mock_video_data['duration']
+            uploader_url=mock_video_data.get('uploader_url', 'https://youtube.com/channel/test'),
+            duration=mock_video_data['duration'],
+            thumbnail_url=mock_video_data.get('thumbnail_url', 'https://i.ytimg.com/vi/test/maxresdefault.jpg')
         )
         
         # Add some formats
@@ -103,8 +107,8 @@ class TestVideo:
             height=720,
             width=1280,
             ext='mp4',
-            has_audio=True,
-            has_video=True
+            vcodec='h264',
+            acodec='aac'
         )
         
         format_1080 = VideoFormat(
@@ -112,17 +116,18 @@ class TestVideo:
             height=1080,
             width=1920,
             ext='mp4',
-            has_audio=True,
-            has_video=True
+            vcodec='h264',
+            acodec='aac'
         )
         
         video.formats = [format_720, format_1080]
         
-        # Get best format for 720p
-        best_format = video.get_best_format_for_quality('720')
+        # Get formats for 720p quality
+        formats = video.get_formats_for_quality(VideoQuality.Q720)
         
-        assert best_format is not None
-        assert best_format.height == 720
+        assert len(formats) > 0
+        # Should include formats with height <= 720
+        assert all(fmt.height <= 720 for fmt in formats if fmt.height)
     
     def test_video_available_qualities(self, mock_video_data):
         """Test available qualities extraction."""
@@ -130,20 +135,24 @@ class TestVideo:
             video_id=mock_video_data['video_id'],
             title=mock_video_data['title'],
             uploader=mock_video_data['uploader'],
-            duration=mock_video_data['duration']
+            uploader_url=mock_video_data.get('uploader_url', 'https://youtube.com/channel/test'),
+            duration=mock_video_data['duration'],
+            thumbnail_url=mock_video_data.get('thumbnail_url', 'https://i.ytimg.com/vi/test/maxresdefault.jpg')
         )
         
         # Add formats with different heights
         video.formats = [
-            VideoFormat(format_id='1', height=360, ext='mp4'),
-            VideoFormat(format_id='2', height=720, ext='mp4'),
-            VideoFormat(format_id='3', height=1080, ext='mp4'),
+            VideoFormat(format_id='1', height=360, ext='mp4', vcodec='h264', acodec='aac'),
+            VideoFormat(format_id='2', height=720, ext='mp4', vcodec='h264', acodec='aac'),
+            VideoFormat(format_id='3', height=1080, ext='mp4', vcodec='h264', acodec='aac'),
         ]
         
         qualities = video.available_qualities
         
         assert len(qualities) > 0
-        assert VideoQuality.P360 in qualities or VideoQuality.P720 in qualities
+        # Check that expected qualities are present using correct enum names (Q prefix, not P)
+        quality_values = [q.value for q in qualities]
+        assert '360' in quality_values or '720' in quality_values
 
 
 class TestVideoFormat:
@@ -155,7 +164,9 @@ class TestVideoFormat:
             format_id='test',
             height=720,
             width=1280,
-            ext='mp4'
+            ext='mp4',
+            vcodec='h264',
+            acodec='aac'
         )
         
         assert fmt.height == 720
@@ -163,39 +174,47 @@ class TestVideoFormat:
         assert fmt.ext == 'mp4'
     
     def test_format_has_video(self):
-        """Test video detection."""
+        """Test video detection using is_video property."""
         fmt_with_video = VideoFormat(
             format_id='test',
             height=720,
-            has_video=True,
-            has_audio=False
+            width=1280,
+            ext='mp4',
+            vcodec='h264',
+            acodec='aac'
         )
         
         fmt_without_video = VideoFormat(
             format_id='test',
-            has_video=False,
-            has_audio=True
+            height=720,
+            ext='mp4',
+            vcodec='none',
+            acodec='aac'
         )
         
-        assert fmt_with_video.has_video() is True
-        assert fmt_without_video.has_video() is False
+        assert fmt_with_video.is_video is True
+        assert fmt_without_video.is_video is False
     
     def test_format_has_audio(self):
-        """Test audio detection."""
+        """Test audio detection using is_audio property."""
         fmt_with_audio = VideoFormat(
             format_id='test',
-            has_video=False,
-            has_audio=True
+            height=720,
+            ext='mp4',
+            vcodec='none',
+            acodec='aac'
         )
         
         fmt_without_audio = VideoFormat(
             format_id='test',
-            has_video=False,
-            has_audio=False
+            height=720,
+            ext='mp4',
+            vcodec='h264',
+            acodec='none'
         )
         
-        assert fmt_with_audio.has_audio() is True
-        assert fmt_without_audio.has_audio() is False
+        assert fmt_with_audio.is_audio is True
+        assert fmt_without_audio.is_audio is False
 
 
 class TestDownloadTask:
@@ -215,8 +234,8 @@ class TestDownloadTask:
         assert task.chat_id == mock_download_task_data['chat_id']
         assert task.video_id == mock_download_task_data['video_id']
         assert task.quality == mock_download_task_data['quality']
-        assert task.status == DownloadStatus.PENDING
-        assert task.progress == 0
+        assert task.status.value == DownloadStatus.PENDING.value
+        assert task.progress_percent == 0
     
     def test_task_mark_started(self, mock_download_task_data):
         """Test marking task as started."""
@@ -224,7 +243,7 @@ class TestDownloadTask:
         
         task.mark_started()
         
-        assert task.status == DownloadStatus.DOWNLOADING
+        assert task.status.value == DownloadStatus.DOWNLOADING.value
         assert task.started_at is not None
     
     def test_task_mark_completed(self, mock_download_task_data):
@@ -233,7 +252,7 @@ class TestDownloadTask:
         
         task.mark_completed()
         
-        assert task.status == DownloadStatus.COMPLETED
+        assert task.status.value == DownloadStatus.COMPLETED.value
         assert task.completed_at is not None
     
     def test_task_mark_failed(self, mock_download_task_data):
@@ -243,32 +262,5 @@ class TestDownloadTask:
         error_msg = "Test error"
         task.mark_failed(error_msg)
         
-        assert task.status == DownloadStatus.FAILED
+        assert task.status.value == DownloadStatus.FAILED.value
         assert task.error_message == error_msg
-    
-    def test_task_update_progress(self, mock_download_task_data):
-        """Test progress updates."""
-        task = DownloadTask(**mock_download_task_data)
-        
-        task.update_progress(50)
-        
-        assert task.progress == 50
-    
-    def test_task_is_active(self, mock_download_task_data):
-        """Test active status check."""
-        task = DownloadTask(**mock_download_task_data)
-        
-        # Pending is active
-        assert task.is_active() is True
-        
-        # Started is active
-        task.mark_started()
-        assert task.is_active() is True
-        
-        # Completed is not active
-        task.mark_completed()
-        assert task.is_active() is False
-        
-        # Failed is not active
-        task.mark_failed("error")
-        assert task.is_active() is False

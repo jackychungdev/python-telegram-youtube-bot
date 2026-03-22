@@ -1,0 +1,263 @@
+2026-03-22 21:42:30 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 21:42:30 - __main__ - ERROR - Bot error: 'Config' object has no attribute 'database_url'
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 99, in main
+    asyncio.run(run_bot())
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 664, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 48, in run_bot
+    db = Database(config.database_url)
+                  ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'database_url'
+2026-03-22 21:43:17 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 21:43:17 - __main__ - INFO - Database connected
+2026-03-22 21:43:17 - __main__ - INFO - Repositories initialized
+2026-03-22 21:43:17 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-22 21:43:17 - __main__ - ERROR - Bot error: 'Config' object has no attribute 'telegram_bot_token'
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 105, in main
+    asyncio.run(run_bot())
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 664, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 72, in run_bot
+    application = Application.builder().token(config.telegram_bot_token).build()
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'telegram_bot_token'
+2026-03-22 22:43:06 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 22:43:06 - __main__ - INFO - Database connected
+2026-03-22 22:43:06 - __main__ - INFO - Repositories initialized
+2026-03-22 22:43:06 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-22 22:43:07 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-22 22:43:07 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-22 22:43:07 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-22 22:43:07 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-22 22:43:07 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-22 22:43:07 - application.handlers.registration - INFO - Command handlers registered
+2026-03-22 22:43:07 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-22 22:43:07 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-22 22:43:07 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-22 22:43:07 - __main__ - INFO - All handlers registered
+2026-03-22 22:43:07 - application.services.queue_service - INFO - Queue worker started
+2026-03-22 22:43:07 - __main__ - INFO - Queue worker started
+2026-03-22 22:43:07 - __main__ - INFO - Bot is starting...
+2026-03-22 22:43:08 - application.services.queue_service - INFO - Queue processor running
+2026-03-22 22:43:08 - __main__ - ERROR - Bot error: Cannot close a running event loop
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_application.py", line 1054, in __run
+    loop.run_until_complete(self._bootstrap_initialize(max_retries=bootstrap_retries))
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 640, in run_until_complete
+    self._check_running()
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 599, in _check_running
+    raise RuntimeError('This event loop is already running')
+RuntimeError: This event loop is already running
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_application.py", line 1079, in __run
+    loop.run_until_complete(self.shutdown())
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 640, in run_until_complete
+    self._check_running()
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 599, in _check_running
+    raise RuntimeError('This event loop is already running')
+RuntimeError: This event loop is already running
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 105, in main
+    asyncio.run(run_bot())
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 664, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 99, in run_bot
+    await application.run_polling(allowed_updates=Update.ALL_TYPES)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_application.py", line 839, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_application.py", line 1084, in __run
+    loop.close()
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 687, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+2026-03-22 22:43:51 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 22:43:51 - __main__ - INFO - Database connected
+2026-03-22 22:43:51 - __main__ - INFO - Repositories initialized
+2026-03-22 22:43:51 - __main__ - ERROR - Bot error: no running event loop
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 81, in main
+    cache_service = CacheService(video_repo)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\application\services\cache_service.py", line 51, in __init__
+    asyncio.create_task(self.video_repo.initialize())
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 407, in create_task
+    loop = events.get_running_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no running event loop
+2026-03-22 22:44:19 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 22:44:19 - __main__ - INFO - Database connected
+2026-03-22 22:44:19 - __main__ - INFO - Repositories initialized
+2026-03-22 22:44:19 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-22 22:44:20 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-22 22:44:20 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-22 22:44:20 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-22 22:44:20 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-22 22:44:20 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-22 22:44:20 - application.handlers.registration - INFO - Command handlers registered
+2026-03-22 22:44:20 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-22 22:44:20 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-22 22:44:20 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-22 22:44:20 - __main__ - INFO - All handlers registered
+2026-03-22 22:44:20 - __main__ - INFO - Bot is starting...
+2026-03-22 22:44:21 - telegram.ext.Application - INFO - Application started
+2026-03-22 22:56:04 - application.handlers.commands - INFO - /start command from user 290569556 (jacky899)
+2026-03-22 22:56:04 - application.handlers.base_handler - INFO - User 290569556 performed action: start
+2026-03-22 22:56:04 - application.handlers.base_handler - ERROR - Failed to log user action: unable to open database file
+2026-03-22 22:56:04 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_application.py", line 1315, in process_update
+    await coroutine
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_handlers\basehandler.py", line 159, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\application\handlers\commands.py", line 52, in handle
+    await handler(update, context)
+  File "C:\workspace\python-telegram-youtube-bot\src\application\handlers\commands.py", line 73, in handle_start
+    await self.user_repo.create_or_update(
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\user_repository.py", line 81, in create_or_update
+    await self._ensure_initialized()
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\user_repository.py", line 66, in _ensure_initialized
+    await self.initialize()
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\user_repository.py", line 33, in initialize
+    await self._create_tables()
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\user_repository.py", line 39, in _create_tables
+    await self.create_table(
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\base_repository.py", line 197, in create_table
+    await self.execute(query)
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\base_repository.py", line 39, in execute
+    async with aiosqlite.connect(self.db_path) as conn:
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 181, in __aenter__
+    return await self
+           ^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 168, in _connect
+    self._connection = await future
+                       ^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 466, in connector
+    return sqlite3.connect(loc, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unable to open database file
+2026-03-22 22:57:40 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 22:57:40 - __main__ - INFO - Database connected
+2026-03-22 22:57:40 - __main__ - INFO - Repositories initialized
+2026-03-22 22:57:40 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-22 22:57:41 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-22 22:57:41 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-22 22:57:41 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-22 22:57:41 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-22 22:57:41 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-22 22:57:41 - application.handlers.registration - INFO - Command handlers registered
+2026-03-22 22:57:41 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-22 22:57:41 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-22 22:57:41 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-22 22:57:41 - __main__ - INFO - All handlers registered
+2026-03-22 22:57:41 - __main__ - INFO - Bot is starting...
+2026-03-22 22:57:42 - telegram.ext.Application - INFO - Application started
+2026-03-22 22:58:42 - application.handlers.commands - INFO - /start command from user 290569556 (jacky899)
+2026-03-22 22:58:42 - application.handlers.base_handler - INFO - User 290569556 performed action: start
+2026-03-22 23:01:57 - application.handlers.commands - INFO - /start command from user 290569556 (jacky899)
+2026-03-22 23:01:57 - application.handlers.base_handler - INFO - User 290569556 performed action: start
+2026-03-22 23:03:49 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 23:03:49 - __main__ - INFO - Database connected
+2026-03-22 23:03:49 - __main__ - INFO - Repositories initialized
+2026-03-22 23:03:49 - __main__ - ERROR - Bot error: table authorized_users has no column named added_date
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 83, in main
+    loop.run_until_complete(auth_repo.add_user(admin_chat_id, 'config_auto_authorize'))
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 664, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\authorization_repository.py", line 62, in add_user
+    return await self.execute(query, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\base_repository.py", line 41, in execute
+    cursor = await conn.execute(query, parameters)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 223, in execute
+    cursor = await self._execute(self._conn.execute, sql, parameters)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+sqlite3.OperationalError: table authorized_users has no column named added_date
+2026-03-22 23:03:56 - __main__ - INFO - Bot stopped by user
+2026-03-22 23:04:19 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 23:04:19 - __main__ - INFO - Database connected
+2026-03-22 23:04:19 - __main__ - INFO - Repositories initialized
+2026-03-22 23:04:19 - __main__ - ERROR - Bot error: table authorized_users has no column named added_date
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 85, in main
+    loop.run_until_complete(auth_repo.add_user(admin_chat_id, 'config_auto_authorize'))
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 664, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\authorization_repository.py", line 62, in add_user
+    return await self.execute(query, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\infrastructure\persistence\repositories\base_repository.py", line 41, in execute
+    cursor = await conn.execute(query, parameters)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiosqlite\core.py", line 223, in execute
+    cursor = await self._execute(self._conn.execute, sql, parameters)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+sqlite3.OperationalError: table authorized_users has no column named added_date
+2026-03-22 23:07:31 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-22 23:07:31 - __main__ - INFO - Database connected
+2026-03-22 23:07:31 - __main__ - INFO - Repositories initialized
+2026-03-22 23:07:31 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-22 23:07:31 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-22 23:07:32 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-22 23:07:32 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-22 23:07:32 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-22 23:07:32 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-22 23:07:32 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-22 23:07:32 - application.handlers.registration - INFO - Command handlers registered
+2026-03-22 23:07:32 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-22 23:07:32 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-22 23:07:32 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-22 23:07:32 - __main__ - INFO - All handlers registered
+2026-03-22 23:07:32 - __main__ - INFO - Bot is starting...
+2026-03-22 23:07:33 - telegram.ext.Application - INFO - Application started
+2026-03-22 23:08:51 - __main__ - INFO - Bot stopped by user

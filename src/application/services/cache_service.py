@@ -32,7 +32,7 @@ class CacheService:
     
     def __init__(
         self, 
-        video_repository: VideoRepository,
+        video_repository,
         cache_enabled: bool = True,
         max_cache_age_days: int = 30
     ):
@@ -47,8 +47,8 @@ class CacheService:
         self.cache_enabled = cache_enabled
         self.max_cache_age_days = max_cache_age_days
         
-        # Initialize repository
-        asyncio.create_task(self.video_repo.initialize())
+        # Note: Repository initialization should be done externally
+        # before using the cache service
     
     async def get_cached_file(
         self, 

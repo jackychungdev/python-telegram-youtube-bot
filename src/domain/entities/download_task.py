@@ -6,7 +6,12 @@ Represents a download request with its state and progress.
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
-from .download_status import DownloadStatus
+import sys
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from value_objects.download_status import DownloadStatus
 
 
 @dataclass

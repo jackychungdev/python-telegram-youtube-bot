@@ -5,6 +5,7 @@ Repository for user authorization management.
 """
 from typing import List, Dict, Any
 from .base_repository import BaseRepository
+from ..database import Database
 
 
 class AuthorizationRepository(BaseRepository):
@@ -13,13 +14,14 @@ class AuthorizationRepository(BaseRepository):
     Handles whitelist-based authorization system for bot access control.
     """
     
-    def __init__(self, db_path: str = 'authorized_users.db'):
+    def __init__(self, db: Database):
         """Initialize authorization repository.
         
         Args:
-            db_path: Path to SQLite database file
+            db: Database instance for connection management
         """
-        super().__init__(db_path)
+        super().__init__(db.db_path)
+        self.db = db
         self._tables_created = False
     
     async def initialize(self):

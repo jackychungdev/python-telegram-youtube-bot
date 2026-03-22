@@ -160,16 +160,16 @@ class YoutubeService:
         """
         audio_formats = [
             f for f in formats 
-            if f.has_audio() and not f.has_video()
+            if f.is_audio and not f.is_video
         ]
         
         if not audio_formats:
             # Fallback to formats with audio
-            audio_formats = [f for f in formats if f.has_audio()]
+            audio_formats = [f for f in formats if f.is_audio]
         
         if audio_formats:
-            # Sort by bitrate (prefer higher)
-            return max(audio_formats, key=lambda f: f.audio_bitrate or 0)
+            # Sort by bitrate (prefer higher) - using tbr as proxy
+            return max(audio_formats, key=lambda f: f.tbr or 0)
         
         return None
     
@@ -183,13 +183,13 @@ class YoutubeService:
             Best format or None
         """
         # Prefer formats with both video and audio
-        combined = [f for f in formats if f.has_video() and f.has_audio()]
+        combined = [f for f in formats if f.is_video and f.is_audio]
         
         if combined:
             return max(combined, key=lambda f: f.height or 0)
         
         # Fallback to highest quality video
-        video_formats = [f for f in formats if f.has_video()]
+        video_formats = [f for f in formats if f.is_video]
         if video_formats:
             return max(video_formats, key=lambda f: f.height or 0)
         
@@ -210,7 +210,7 @@ class YoutubeService:
             Closest matching format or None
         """
         # Filter formats with video
-        video_formats = [f for f in formats if f.has_video()]
+        video_formats = [f for f in formats if f.is_video]
         
         if not video_formats:
             return None
@@ -249,6 +249,7 @@ class YoutubeService:
             r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=[\w-]+',
             r'(?:https?:\/\/)?(?:www\.)?youtu\.be\/[\w-]+',
             r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/[\w-]+',
+            r'(?:https?:\/\/)?(?:m\.)?youtube\.com\/watch\?v=[\w-]+',  # Mobile support
         ]
         
         for pattern in youtube_patterns:

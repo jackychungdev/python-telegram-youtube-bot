@@ -5,7 +5,12 @@ Represents a YouTube video with its metadata and formats.
 """
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict
-from .video_quality import VideoQuality
+import sys
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from value_objects.video_quality import VideoQuality
 
 
 @dataclass

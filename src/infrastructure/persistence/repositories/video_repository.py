@@ -6,6 +6,7 @@ Repository for video cache management and retrieval operations.
 from typing import Optional, Tuple, List, Dict, Any
 from datetime import datetime
 from .base_repository import BaseRepository
+from ..database import Database
 
 
 class VideoRepository(BaseRepository):
@@ -15,13 +16,14 @@ class VideoRepository(BaseRepository):
     the same content multiple times.
     """
     
-    def __init__(self, db_path: str = 'users.db'):
+    def __init__(self, db: Database):
         """Initialize video repository.
         
         Args:
-            db_path: Path to SQLite database file
+            db: Database instance for connection management
         """
-        super().__init__(db_path)
+        super().__init__(db.db_path)
+        self.db = db
         self._tables_created = False
     
     async def initialize(self):

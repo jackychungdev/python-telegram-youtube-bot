@@ -1,8 +1,6 @@
-"""
-Pytest Configuration
+# Pytest Configuration
+# Configuration for pytest test runner.
 
-Configuration for pytest test runner.
-"""
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = [

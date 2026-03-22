@@ -23,8 +23,8 @@ class TestCommandHandlers:
         """Test /start command for authorized user."""
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
-        # Mock authorization check
-        handler.auth_repo.is_authorized = AsyncMock(return_value=True)
+        # Mock authorization check - configure the method on the existing mock
+        handler.auth_repo.is_authorized.return_value = True
         
         await handler.handle_start(mock_telegram_update, mock_context)
         
@@ -45,7 +45,7 @@ class TestCommandHandlers:
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
         # Mock authorization check to fail
-        handler.auth_repo.is_authorized = AsyncMock(return_value=False)
+        handler.auth_repo.is_authorized.return_value = False
         
         await handler.handle_start(mock_telegram_update, mock_context)
         
@@ -63,7 +63,7 @@ class TestCommandHandlers:
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
         # Mock authorization
-        handler.auth_repo.is_authorized = AsyncMock(return_value=True)
+        handler.auth_repo.is_authorized.return_value = True
         
         await handler.handle_lang(mock_telegram_update, mock_context)
         
@@ -81,7 +81,14 @@ class TestCommandHandlers:
         """Test /download command shows instructions."""
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
-        handler.auth_repo.is_authorized = AsyncMock(return_value=True)
+        # Mock authorization check
+        handler.auth_repo.is_authorized.return_value = True
+        
+        # Mock get_user_context to return a dict (not a coroutine)
+        async def mock_get_context(user_id):
+            return {'downloads_in_hour': 0}
+        
+        handler.get_user_context = mock_get_context
         
         await handler.handle_download(mock_telegram_update, mock_context)
         
@@ -111,7 +118,8 @@ class TestCommandHandlers:
         """Test /status command shows bot status."""
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
-        handler.auth_repo.is_authorized = AsyncMock(return_value=True)
+        # Mock authorization check
+        handler.auth_repo.is_authorized.return_value = True
         
         # Mock queue status
         mock_all_services['queue_service'].get_queue_status.return_value = {
@@ -121,9 +129,7 @@ class TestCommandHandlers:
         }
         
         # Mock cache stats
-        mock_all_services['cache_service'].get_cache_statistics = AsyncMock(
-            return_value={'total_files': 50, 'enabled': True}
-        )
+        mock_all_services['cache_service'].get_cache_statistics.return_value = {'total_files': 50, 'enabled': True}
         
         await handler.handle_status(mock_telegram_update, mock_context)
         
