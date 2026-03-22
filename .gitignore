@@ -1,1 +1,5 @@
 extractors/__pycache__/archive_ragtag.cpython-312.pyc
+downloads/*
+*.jpg
+*.mp3
+*.json

@@ -15,6 +15,8 @@ services:
       - ../config:/app/config:ro
       # Persist logs
       - ../logs:/app/logs
+      # Mount output folder to music folder
+      - ../music:/app/downloads
     environment:
       # Override config values via environment variables if needed
       - PYTHONUNBUFFERED=1
