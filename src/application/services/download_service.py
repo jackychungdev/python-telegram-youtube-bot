@@ -5,12 +5,18 @@ Business logic for download orchestration, queue management, and progress tracki
 """
 import asyncio
 import logging
-from typing import Optional, Callable, Dict, Any
+from typing import Optional, Dict, Any, Callable
 from pathlib import Path
 import yt_dlp
 
-from src.domain import Video, DownloadTask, DownloadStatus
-from src.core.exceptions import DownloadError
+from domain import Video, DownloadTask, DownloadStatus
+from core.exceptions import DownloadError
+from application.services.youtube_service import YoutubeService
+from application.services.telegram_service import TelegramService
+from infrastructure.utils.file_utils import FileUtils
+from infrastructure.utils.metadata_probe import MetadataProbe
+from infrastructure.external.youtube.quality_selector import QualitySelector
+from core.config import Config
 
 
 logger = logging.getLogger(__name__)

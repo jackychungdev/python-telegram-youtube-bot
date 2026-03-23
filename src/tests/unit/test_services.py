@@ -5,11 +5,11 @@ Tests for YouTube, Download, Cache, and other services.
 """
 import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
-from src.application.services.youtube_service import YoutubeService
-from src.application.services.cache_service import CacheService
-from src.application.services.download_service import DownloadService
-from src.domain.entities.video import Video
-from src.domain.value_objects.video_quality import VideoQuality
+from domain.entities.video import Video
+from domain.value_objects.video_quality import VideoQuality
+from application.services.youtube_service import YoutubeService
+from application.services.cache_service import CacheService
+from application.services.download_service import DownloadService
 
 
 class TestYoutubeService:

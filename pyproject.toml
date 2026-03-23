@@ -1,6 +1,12 @@
 # Pytest Configuration
 # Configuration for pytest test runner.
 
+[build-system]
+include = [
+    "src",
+    "!src/**/__pycache__",
+]
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = [

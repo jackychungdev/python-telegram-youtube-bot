@@ -10,8 +10,8 @@ from typing import Optional, List, Dict, Any
 from pathlib import Path
 import yt_dlp
 
-from src.domain import Video, VideoFormat, VideoQuality
-from src.core.exceptions import DownloadError, ValidationError
+from domain import Video, VideoFormat, VideoQuality
+from core.exceptions import DownloadError, ValidationError
 
 
 logger = logging.getLogger(__name__)

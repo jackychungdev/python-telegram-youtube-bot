@@ -1079,3 +1079,71 @@ TypeError: TelegramService.send_audio() got an unexpected keyword argument 'dura
 2026-03-23 04:23:38 - application.handlers.callbacks - INFO - Download completed: downloads\m2ySZydlYFg_audio.mp3
 2026-03-23 04:23:39 - application.services.youtube_service - INFO - Fetched video info: CTING COVER | 怎麼了 | 周興哲 by SzeTingWong黃詩婷
 2026-03-23 04:24:00 - application.services.telegram_service - ERROR - Failed to send audio to 290569556: Timed out
+2026-03-23 09:04:56 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 09:04:56 - __main__ - INFO - Database connected
+2026-03-23 09:04:56 - __main__ - INFO - Repositories initialized
+2026-03-23 09:04:56 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 09:04:56 - __main__ - ERROR - Bot error: name 'deque' is not defined
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\main.py", line 94, in main
+    queue_service = QueueService()
+                    ^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\src\application\services\queue_service.py", line 48, in __init__
+    self._queue: deque[DownloadTask] = deque(maxlen=max_queue_size)
+                                       ^^^^^
+NameError: name 'deque' is not defined
+2026-03-23 09:20:13 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 09:20:13 - __main__ - INFO - Database connected
+2026-03-23 09:20:13 - __main__ - INFO - Repositories initialized
+2026-03-23 09:20:13 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 09:20:13 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 09:20:13 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 09:20:13 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 09:20:13 - __main__ - INFO - Queue worker started
+2026-03-23 09:20:14 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 09:20:14 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 09:20:14 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 09:20:14 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 09:20:14 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 09:20:14 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 09:20:14 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 09:20:14 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 09:20:14 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 09:20:14 - __main__ - INFO - All handlers registered
+2026-03-23 09:20:14 - __main__ - INFO - Bot is starting...
+2026-03-23 09:20:15 - telegram.ext.Application - INFO - Application started
+2026-03-23 09:29:00 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-23 09:29:00 - __main__ - INFO - Database connected
+2026-03-23 09:29:00 - __main__ - INFO - Repositories initialized
+2026-03-23 09:29:00 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-23 09:29:00 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-23 09:29:00 - application.services.queue_service - INFO - Queue worker started
+2026-03-23 09:29:00 - application.services.queue_service - INFO - Queue processor running
+2026-03-23 09:29:00 - __main__ - INFO - Queue worker started
+2026-03-23 09:29:01 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-23 09:29:01 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-23 09:29:01 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-23 09:29:01 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-23 09:29:01 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-23 09:29:01 - application.handlers.registration - INFO - Command handlers registered
+2026-03-23 09:29:01 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-23 09:29:01 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-23 09:29:01 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-23 09:29:01 - __main__ - INFO - All handlers registered
+2026-03-23 09:29:01 - __main__ - INFO - Bot is starting...
+2026-03-23 09:29:02 - telegram.ext.Application - INFO - Application started
+2026-03-23 09:32:05 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/mlSBFmY_5H8?si=GqjuAbkR8p4dO2YQ
+2026-03-23 09:32:05 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-23 09:32:10 - application.services.youtube_service - INFO - Fetched video info: 【纯享】《想见你想见你想见你》欧阳娜娜《美好的时光》 Wonderful Time /浙江卫视官方HD/ by  ZJSTV Music Channel-Welcome to subscribe-
+2026-03-23 09:32:16 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_mlSBFmY_5H8
+2026-03-23 09:32:16 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video mlSBFmY_5H8
+2026-03-23 09:32:18 - application.services.youtube_service - INFO - Fetched video info: 【纯享】《想见你想见你想见你》欧阳娜娜《美好的时光》 Wonderful Time /浙江卫视官方HD/ by  ZJSTV Music Channel-Welcome to subscribe-
+2026-03-23 09:32:18 - application.services.queue_service - INFO - Task added to queue: mlSBFmY_5H8 (queue size: 1)
+2026-03-23 09:32:18 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-59' coro=<QueueService._execute_with_semaphore() done, defined at C:\workspace\python-telegram-youtube-bot\src\application\services\queue_service.py:214> exception=NameError("name 'datetime' is not defined")>
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\src\application\services\queue_service.py", line 222, in _execute_with_semaphore
+    task.started_at = datetime.now()
+                      ^^^^^^^^
+NameError: name 'datetime' is not defined. Did you forget to import 'datetime'
+2026-03-23 09:33:14 - __main__ - INFO - Bot stopped by user
