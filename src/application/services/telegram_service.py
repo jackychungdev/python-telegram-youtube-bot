@@ -10,7 +10,7 @@ from typing import Optional, List, Dict, Any
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application
 
-from src.core.exceptions import BotException
+from core.exceptions import BotException
 
 
 logger = logging.getLogger(__name__)

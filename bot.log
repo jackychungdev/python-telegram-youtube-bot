@@ -1147,3 +1147,173 @@ Traceback (most recent call last):
                       ^^^^^^^^
 NameError: name 'datetime' is not defined. Did you forget to import 'datetime'
 2026-03-23 09:33:14 - __main__ - INFO - Bot stopped by user
+2026-03-25 23:44:59 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-25 23:44:59 - __main__ - INFO - Database connected
+2026-03-25 23:44:59 - __main__ - INFO - Repositories initialized
+2026-03-25 23:44:59 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-25 23:44:59 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-25 23:44:59 - application.services.queue_service - INFO - Queue worker started
+2026-03-25 23:44:59 - application.services.queue_service - INFO - Queue processor running
+2026-03-25 23:44:59 - __main__ - INFO - Queue worker started
+2026-03-25 23:45:00 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-25 23:45:00 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-25 23:45:00 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-25 23:45:00 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-25 23:45:00 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-25 23:45:00 - application.handlers.registration - INFO - Command handlers registered
+2026-03-25 23:45:00 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-25 23:45:00 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-25 23:45:00 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-25 23:45:00 - __main__ - INFO - All handlers registered
+2026-03-25 23:45:00 - __main__ - INFO - Bot is starting...
+2026-03-25 23:45:02 - telegram.ext.Application - INFO - Application started
+2026-03-26 01:28:03 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\http11.py", line 136, in handle_async_request
+    raise exc
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_async\http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_backends\anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 155, in __exit__
+    self.gen.throw(value)
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\jacky\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 155, in __exit__
+    self.gen.throw(value)
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 671, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 4860, in get_updates
+    await self._post(
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\python-telegram-youtube-bot\.venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ReadError: 
+2026-03-26 01:29:36 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-26 01:29:36 - __main__ - INFO - Database connected
+2026-03-26 01:29:36 - __main__ - INFO - Repositories initialized
+2026-03-26 01:29:36 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-26 01:29:36 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-26 01:29:36 - application.services.queue_service - INFO - Queue worker started
+2026-03-26 01:29:36 - application.services.queue_service - INFO - Queue processor running
+2026-03-26 01:29:36 - __main__ - INFO - Queue worker started
+2026-03-26 01:29:37 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-26 01:29:37 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-26 01:29:37 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-26 01:29:37 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-26 01:29:37 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-26 01:29:37 - application.handlers.registration - INFO - Command handlers registered
+2026-03-26 01:29:37 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-26 01:29:37 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-26 01:29:37 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-26 01:29:37 - __main__ - INFO - All handlers registered
+2026-03-26 01:29:37 - __main__ - INFO - Bot is starting...
+2026-03-26 01:29:37 - telegram.ext.Application - INFO - Application started
+2026-03-26 01:31:38 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/mQSDp_CnHVE?si=W7b7rLjF-PP6ufMr
+2026-03-26 01:31:38 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-26 01:31:41 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜銀河修理員｜Dear Jane by SzeTingWong黃詩婷
+2026-03-26 01:31:48 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_mQSDp_CnHVE
+2026-03-26 01:31:48 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video mQSDp_CnHVE
+2026-03-26 01:31:50 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜銀河修理員｜Dear Jane by SzeTingWong黃詩婷
+2026-03-26 01:31:50 - application.handlers.callbacks - ERROR - Failed to start download: No module named 'src'
+2026-03-26 01:32:32 - __main__ - INFO - Starting Telegram YouTube Bot (Refactored Version)
+2026-03-26 01:32:32 - __main__ - INFO - Database connected
+2026-03-26 01:32:32 - __main__ - INFO - Repositories initialized
+2026-03-26 01:32:32 - __main__ - INFO - Admin user 290569556 auto-authorized from config
+2026-03-26 01:32:32 - application.services.queue_service - INFO - Queue service initialized (max_size=100, max_concurrent=3)
+2026-03-26 01:32:32 - application.services.queue_service - INFO - Queue worker started
+2026-03-26 01:32:32 - application.services.queue_service - INFO - Queue processor running
+2026-03-26 01:32:32 - __main__ - INFO - Queue worker started
+2026-03-26 01:32:33 - application.services.telegram_service - INFO - Telegram service initialized
+2026-03-26 01:32:33 - application.handlers.registration - INFO - Registering all handlers...
+2026-03-26 01:32:33 - application.handlers.base_handler - INFO - CommandHandlers initialized
+2026-03-26 01:32:33 - application.handlers.base_handler - INFO - CallbackHandlers initialized
+2026-03-26 01:32:33 - application.handlers.base_handler - INFO - InlineHandlers initialized
+2026-03-26 01:32:33 - application.handlers.registration - INFO - Command handlers registered
+2026-03-26 01:32:33 - application.handlers.registration - INFO - Callback handlers registered
+2026-03-26 01:32:33 - application.handlers.registration - INFO - Inline handlers registered
+2026-03-26 01:32:33 - application.handlers.registration - INFO - All handlers registered successfully
+2026-03-26 01:32:33 - __main__ - INFO - All handlers registered
+2026-03-26 01:32:33 - __main__ - INFO - Bot is starting...
+2026-03-26 01:32:34 - telegram.ext.Application - INFO - Application started
+2026-03-26 01:33:24 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_mQSDp_CnHVE
+2026-03-26 01:33:24 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video mQSDp_CnHVE
+2026-03-26 01:33:26 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜銀河修理員｜Dear Jane by SzeTingWong黃詩婷
+2026-03-26 01:33:26 - application.services.queue_service - INFO - Task added to queue: mQSDp_CnHVE (queue size: 1)
+2026-03-26 01:33:26 - application.services.queue_service - INFO - Executing task: mQSDp_CnHVE (quality: audio)
+2026-03-26 01:33:26 - application.handlers.callbacks - INFO - Executing download for task 6682: mQSDp_CnHVE
+2026-03-26 01:33:26 - application.services.download_service - INFO - Starting download: mQSDp_CnHVE (quality: audio)

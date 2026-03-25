@@ -4,7 +4,7 @@ Quality Selector Utility
 Advanced quality selection strategies for YouTube downloads.
 """
 from typing import Optional, List, Dict, Any
-from src.domain import VideoFormat, VideoQuality
+from domain import VideoFormat, VideoQuality
 
 
 class QualitySelector:

@@ -9,7 +9,7 @@ from typing import Optional, List, Dict, Any
 from collections import deque
 from datetime import datetime
 
-from src.domain import DownloadTask, DownloadStatus
+from domain import DownloadTask, DownloadStatus
 
 
 logger = logging.getLogger(__name__)

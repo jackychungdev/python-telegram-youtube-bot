@@ -136,7 +136,7 @@ class CallbackHandlers(BaseHandler):
                 )
                 
                 # Create download task
-                from src.domain import DownloadTask
+                from domain import DownloadTask
                 
                 task = DownloadTask(
                     chat_id=query.message.chat_id,
