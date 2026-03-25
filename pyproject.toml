@@ -11,7 +11,7 @@ include = [
 minversion = "7.0"
 addopts = [
     "-ra",
-    "-q",
+    "-v",
     "--strict-markers",
     "--strict-config",
     "--cov=src",
@@ -23,6 +23,9 @@ addopts = [
 testpaths = [
     "src/tests/unit",
     "src/tests/integration",
+]
+pythonpath = [
+    "src",
 ]
 python_files = [
     "test_*.py",

@@ -1317,3 +1317,23 @@ telegram.error.NetworkError: httpx.ReadError:
 2026-03-26 01:33:26 - application.services.queue_service - INFO - Executing task: mQSDp_CnHVE (quality: audio)
 2026-03-26 01:33:26 - application.handlers.callbacks - INFO - Executing download for task 6682: mQSDp_CnHVE
 2026-03-26 01:33:26 - application.services.download_service - INFO - Starting download: mQSDp_CnHVE (quality: audio)
+2026-03-26 01:33:35 - application.services.download_service - INFO - Download completed: downloads\mQSDp_CnHVE_audio.mp3
+2026-03-26 01:33:35 - application.handlers.callbacks - INFO - Download completed: downloads\mQSDp_CnHVE_audio.mp3
+2026-03-26 01:33:36 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜銀河修理員｜Dear Jane by SzeTingWong黃詩婷
+2026-03-26 01:33:57 - application.services.telegram_service - ERROR - Failed to send audio to 290569556: Timed out
+2026-03-26 01:33:58 - application.services.queue_service - INFO - Task completed: mQSDp_CnHVE
+2026-03-26 01:40:28 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/w9r64mKkLiU?si=_aZZKOr6w25naPfy
+2026-03-26 01:40:28 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-26 01:40:31 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜假使世界原來不像你預期｜方皓玟 by SzeTingWong黃詩婷
+2026-03-26 01:40:33 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_w9r64mKkLiU
+2026-03-26 01:40:33 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video w9r64mKkLiU
+2026-03-26 01:40:34 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜假使世界原來不像你預期｜方皓玟 by SzeTingWong黃詩婷
+2026-03-26 01:40:34 - application.services.queue_service - INFO - Task added to queue: w9r64mKkLiU (queue size: 1)
+2026-03-26 01:40:34 - application.services.queue_service - INFO - Executing task: w9r64mKkLiU (quality: audio)
+2026-03-26 01:40:34 - application.handlers.callbacks - INFO - Executing download for task 434827: w9r64mKkLiU
+2026-03-26 01:40:34 - application.services.download_service - INFO - Starting download: w9r64mKkLiU (quality: audio)
+2026-03-26 01:40:44 - application.services.download_service - INFO - Download completed: downloads\w9r64mKkLiU_audio.mp3
+2026-03-26 01:40:44 - application.handlers.callbacks - INFO - Download completed: downloads\w9r64mKkLiU_audio.mp3
+2026-03-26 01:40:45 - application.services.youtube_service - INFO - Fetched video info: CTING COVER｜假使世界原來不像你預期｜方皓玟 by SzeTingWong黃詩婷
+2026-03-26 01:40:51 - application.services.telegram_service - ERROR - Failed to send audio to 290569556: Timed out
+2026-03-26 01:40:52 - application.services.queue_service - INFO - Task completed: w9r64mKkLiU
