@@ -2060,3 +2060,16 @@ telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo faile
 2026-03-27 16:56:24 - telegram.ext.Application - INFO - Application started
 2026-03-27 16:57:45 - application.handlers.commands - INFO - YouTube link received from user 290569556: https://youtu.be/Dnj5Tcpev0Q?si=RsR_m1W9rU1t4xdH
 2026-03-27 16:57:45 - application.handlers.base_handler - INFO - User 290569556 performed action: youtube_link
+2026-03-27 16:57:50 - application.services.youtube_service - INFO - Fetched video info: 李榮浩 Ronghao Li - 年少有為 If I Were Young (華納 Official HD 官方MV) by 李榮浩 Ronghao Li
+2026-03-27 16:57:54 - application.handlers.callbacks - INFO - Callback received from user 290569556: dl_audio_Dnj5Tcpev0Q
+2026-03-27 16:57:54 - application.handlers.callbacks - INFO - User 290569556 selected quality audio for video Dnj5Tcpev0Q
+2026-03-27 16:57:56 - application.services.youtube_service - INFO - Fetched video info: 李榮浩 Ronghao Li - 年少有為 If I Were Young (華納 Official HD 官方MV) by 李榮浩 Ronghao Li
+2026-03-27 16:57:56 - application.services.queue_service - INFO - Task added to queue: Dnj5Tcpev0Q (queue size: 1)
+2026-03-27 16:57:56 - application.services.queue_service - INFO - Executing task: Dnj5Tcpev0Q (quality: audio)
+2026-03-27 16:57:56 - application.handlers.callbacks - INFO - Executing download for task 876619: Dnj5Tcpev0Q
+2026-03-27 16:57:56 - application.services.download_service - INFO - Starting download: Dnj5Tcpev0Q (quality: audio)
+2026-03-27 16:58:11 - application.services.download_service - INFO - Download completed: downloads\Dnj5Tcpev0Q_audio.mp3
+2026-03-27 16:58:11 - application.handlers.callbacks - INFO - Download completed: downloads\Dnj5Tcpev0Q_audio.mp3
+2026-03-27 16:58:13 - application.services.youtube_service - INFO - Fetched video info: 李榮浩 Ronghao Li - 年少有為 If I Were Young (華納 Official HD 官方MV) by 李榮浩 Ronghao Li
+2026-03-27 16:58:46 - application.services.telegram_service - INFO - Audio sent to 290569556: 李榮浩 Ronghao Li - 年少有為 If I Were Young (華納 Official HD 官方MV) (attempt 1/3)
+2026-03-27 16:58:46 - application.services.queue_service - INFO - Task completed: Dnj5Tcpev0Q

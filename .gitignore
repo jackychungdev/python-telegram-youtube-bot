@@ -1,33 +1,90 @@
-bot.log
-*.jpg
-*.mp3
-*.json
-*.db
-*.pyc
-*.pyo
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
+# Python
+*.py[cod]
+*$py.class
 *.so
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.nox/
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.pytest_cache/
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+.venv/
+ENV/
+env/
+.env
+
+# IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
 .env
 .env.local
 .env.*.local
-src/application/handlers/__pycache__/callbacks.cpython-312.pyc
-src/application/handlers/__pycache__/callbacks.cpython-312.pyc
-src/tests/unit/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc
+
+# Logs
+*.log
+bot.log
+logs/
+
+# Database files (SQLite)
+*.db
+!*.db.example
+
+# Media files (downloaded content)
+*.mp4
+*.mp3
+*.mkv
+*.avi
+*.jpg
+*.jpeg
+*.png
+data/
+downloads/
+
+# Coverage reports
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Testing
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Specific project files
+authorized_users.db
+users.db
+
+# Backup files
+*.bak
+*.backup
