@@ -188,6 +188,9 @@ class TestAuthorizationInHandlers:
         # Mock authorization check
         handler.auth_repo.is_authorized = AsyncMock(return_value=True)
         
+        # Mock user repository create_or_update
+        handler.user_repo.create_or_update = AsyncMock(return_value=None)
+        
         await handler.handle_start(mock_telegram_update, mock_context)
         
         # Verify authorization was checked
@@ -216,6 +219,9 @@ class TestAuthorizationInHandlers:
         
         # Mock authorization check to fail
         handler.auth_repo.is_authorized = AsyncMock(return_value=False)
+        
+        # Mock user repository create_or_update
+        handler.user_repo.create_or_update = AsyncMock(return_value=None)
         
         await handler.handle_start(mock_telegram_update, mock_context)
         

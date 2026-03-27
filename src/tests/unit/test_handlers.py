@@ -23,8 +23,11 @@ class TestCommandHandlers:
         """Test /start command for authorized user."""
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
-        # Mock authorization check - configure the method on the existing mock
-        handler.auth_repo.is_authorized.return_value = True
+        # Mock authorization check - configure as AsyncMock
+        handler.auth_repo.is_authorized = AsyncMock(return_value=True)
+        
+        # Mock user repository create_or_update
+        handler.user_repo.create_or_update = AsyncMock(return_value=None)
         
         await handler.handle_start(mock_telegram_update, mock_context)
         
@@ -40,8 +43,11 @@ class TestCommandHandlers:
         """Test /start command for unauthorized user."""
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
-        # Mock authorization check - configure the method on the existing mock
-        handler.auth_repo.is_authorized.return_value = False
+        # Mock authorization check - configure as AsyncMock
+        handler.auth_repo.is_authorized = AsyncMock(return_value=False)
+        
+        # Mock user repository create_or_update
+        handler.user_repo.create_or_update = AsyncMock(return_value=None)
         
         await handler.handle_start(mock_telegram_update, mock_context)
         
@@ -58,8 +64,8 @@ class TestCommandHandlers:
         """Test /status command shows bot status."""
         handler = CommandHandlers(mock_all_services['telegram_service'].bot, mock_all_services)
         
-        # Mock authorization check
-        handler.auth_repo.is_authorized.return_value = True
+        # Mock authorization check - configure as AsyncMock
+        handler.auth_repo.is_authorized = AsyncMock(return_value=True)
         
         # Mock queue status
         mock_all_services['queue_service'].get_queue_status.return_value = {

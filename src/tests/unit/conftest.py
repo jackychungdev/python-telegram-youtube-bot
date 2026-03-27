@@ -137,7 +137,7 @@ def mock_all_services(
     
     queue_service = MagicMock(spec=QueueService)
     queue_service.add_to_queue = AsyncMock(return_value='task_123')
-    queue_service.get_queue_status = AsyncMock(return_value={
+    queue_service.get_queue_status = MagicMock(return_value={
         'queue_length': 0,
         'active_tasks': 0,
         'max_concurrent': 3

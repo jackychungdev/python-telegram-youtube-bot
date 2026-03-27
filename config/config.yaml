@@ -5,6 +5,7 @@ bot:
   ADMIN_CHAT_ID: 290569556
   LOCAL_API_URL: null
   ALLOWED_CHATS: []
+  PROXY_URL: null  # Example: 'http://proxy.example.com:8080' or 'socks5://user:pass@proxy:1080'
 
 download:
   DOWNLOAD_SEMAPHORE: 5

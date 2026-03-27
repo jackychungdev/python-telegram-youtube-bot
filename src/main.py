@@ -99,9 +99,20 @@ def main():
         loop.run_until_complete(queue_service.start_worker())
         logger.info("Queue worker started")
         
-        # Create Telegram application
-        application = Application.builder().token(bot_token).build()
+        # Create Telegram application with optional proxy support
+        app_builder = Application.builder().token(bot_token)
         
+        # Configure proxy if specified
+        proxy_url = config.bot.get('PROXY_URL')
+        if proxy_url:
+            logger.info(f"Using proxy: {proxy_url}")
+            app_builder = app_builder.proxy_url(proxy_url)
+        
+        # Add connection pooling and timeout configuration
+        app_builder = app_builder.connection_pool_size(10).read_timeout(config.bot.get('READ_TIMEOUT', 1800))
+        
+        application = app_builder.build()
+
         # Initialize Telegram service
         telegram_service = TelegramService(application)
         

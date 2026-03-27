@@ -79,28 +79,27 @@ class TelegramService:
         self,
         chat_id: int,
         video_path: str,
-        title: str,
+        title: str = None,
         thumbnail_path: str = None,
         caption: str = None,
-        reply_markup: InlineKeyboardMarkup = None,
-        progress_callback: callable = None
+        reply_markup: InlineKeyboardMarkup = None
     ) -> Optional[str]:
         """Send video file to user.
         
         Args:
             chat_id: Target chat ID
             video_path: Path to video file
-            title: Video title
+            title: Video title (optional)
             thumbnail_path: Path to thumbnail (optional)
             caption: Video caption
             reply_markup: Optional inline keyboard
-            progress_callback: Upload progress callback
             
         Returns:
             File ID if successful, None otherwise
         """
         try:
             from pathlib import Path
+            from telegram.error import RetryAfter, TimedOut
             
             video_file = Path(video_path)
             if not video_file.exists():
@@ -114,24 +113,55 @@ class TelegramService:
                 if thumb_file.exists():
                     thumb = thumb_file
             
-            # Send video
-            with open(video_file, 'rb') as f:
-                message = await self.bot.send_video(
-                    chat_id=chat_id,
-                    video=f,
-                    thumbnail=thumb,
-                    caption=caption or title,
-                    parse_mode='HTML',
-                    reply_markup=reply_markup,
-                    filename=video_file.name
-                )
+            # Retry logic with exponential backoff for timeouts
+            max_retries = 3
+            base_delay = 5  # seconds
             
-            file_id = message.video.file_id
-            logger.info(f"Video sent to {chat_id}: {title}")
-            return file_id
+            for attempt in range(max_retries):
+                try:
+                    # Send video with longer timeout
+                    with open(video_file, 'rb') as f:
+                        message = await asyncio.wait_for(
+                            self.bot.send_video(
+                                chat_id=chat_id,
+                                video=f,
+                                thumbnail=thumb,
+                                caption=caption or title,
+                                parse_mode='HTML',
+                                reply_markup=reply_markup,
+                                filename=video_file.name,
+                                read_timeout=60,
+                                write_timeout=120,
+                                connect_timeout=30,
+                                pool_timeout=30
+                            ),
+                            timeout=180  # Total operation timeout
+                        )
+                    
+                    file_id = message.video.file_id
+                    logger.info(f"Video sent to {chat_id}: {title} (attempt {attempt + 1}/{max_retries})")
+                    return file_id
+                    
+                except (TimedOut, asyncio.TimeoutError) as e:
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Timeout sending video to {chat_id}, retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
+                        await asyncio.sleep(delay)
+                    else:
+                        raise
+                        
+                except RetryAfter as e:
+                    if attempt < max_retries - 1:
+                        delay = min(e.retry_after, 60)
+                        logger.warning(f"Rate limited, waiting {delay}s before retry")
+                        await asyncio.sleep(delay)
+                    else:
+                        raise
+            
+            return None
             
         except Exception as e:
-            logger.error(f"Failed to send video to {chat_id}: {e}")
+            logger.error(f"Failed to send video to {chat_id} after {max_retries} attempts: {e}")
             return None
     
     async def send_audio(
@@ -160,6 +190,7 @@ class TelegramService:
         """
         try:
             from pathlib import Path
+            from telegram.error import RetryAfter, TimedOut
             
             audio_file = Path(audio_path)
             if not audio_file.exists():
@@ -173,28 +204,59 @@ class TelegramService:
                 if thumb_file.exists():
                     thumb = thumb_file
             
-            # Send audio
-            with open(audio_file, 'rb') as f:
-                message = await self.bot.send_audio(
-                    chat_id=chat_id,
-                    audio=f,
-                    thumbnail=thumb,
-                    caption=caption or title,
-                    parse_mode='HTML',
-                    reply_markup=reply_markup,
-                    title=title,
-                    performer=performer,
-                    filename=audio_file.name
-                )
+            # Retry logic with exponential backoff for timeouts
+            max_retries = 3
+            base_delay = 5  # seconds
             
-            file_id = message.audio.file_id
-            logger.info(f"Audio sent to {chat_id}: {title}")
-            return file_id
+            for attempt in range(max_retries):
+                try:
+                    # Send audio with longer timeout
+                    with open(audio_file, 'rb') as f:
+                        message = await asyncio.wait_for(
+                            self.bot.send_audio(
+                                chat_id=chat_id,
+                                audio=f,
+                                thumbnail=thumb,
+                                caption=caption or title,
+                                parse_mode='HTML',
+                                reply_markup=reply_markup,
+                                title=title,
+                                performer=performer,
+                                filename=audio_file.name,
+                                read_timeout=60,
+                                write_timeout=120,
+                                connect_timeout=30,
+                                pool_timeout=30
+                            ),
+                            timeout=180  # Total operation timeout
+                        )
+                    
+                    file_id = message.audio.file_id
+                    logger.info(f"Audio sent to {chat_id}: {title} (attempt {attempt + 1}/{max_retries})")
+                    return file_id
+                    
+                except (TimedOut, asyncio.TimeoutError) as e:
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Timeout sending audio to {chat_id}, retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
+                        await asyncio.sleep(delay)
+                    else:
+                        raise
+                        
+                except RetryAfter as e:
+                    if attempt < max_retries - 1:
+                        delay = min(e.retry_after, 60)
+                        logger.warning(f"Rate limited, waiting {delay}s before retry")
+                        await asyncio.sleep(delay)
+                    else:
+                        raise
+            
+            return None
             
         except Exception as e:
-            logger.error(f"Failed to send audio to {chat_id}: {e}")
+            logger.error(f"Failed to send audio to {chat_id} after {max_retries} attempts: {e}")
             return None
-    
+
     async def send_document(
         self,
         chat_id: int,
@@ -215,30 +277,62 @@ class TelegramService:
         """
         try:
             from pathlib import Path
+            from telegram.error import RetryAfter, TimedOut
             
             doc_file = Path(document_path)
             if not doc_file.exists():
                 logger.error(f"Document not found: {document_path}")
                 return None
             
-            with open(doc_file, 'rb') as f:
-                message = await self.bot.send_document(
-                    chat_id=chat_id,
-                    document=f,
-                    caption=caption,
-                    parse_mode='HTML',
-                    reply_markup=reply_markup,
-                    filename=doc_file.name
-                )
+            # Retry logic with exponential backoff for timeouts
+            max_retries = 3
+            base_delay = 5  # seconds
             
-            file_id = message.document.file_id
-            logger.info(f"Document sent to {chat_id}: {doc_file.name}")
-            return file_id
+            for attempt in range(max_retries):
+                try:
+                    with open(doc_file, 'rb') as f:
+                        message = await asyncio.wait_for(
+                            self.bot.send_document(
+                                chat_id=chat_id,
+                                document=f,
+                                caption=caption,
+                                parse_mode='HTML',
+                                reply_markup=reply_markup,
+                                filename=doc_file.name,
+                                read_timeout=60,
+                                write_timeout=120,
+                                connect_timeout=30,
+                                pool_timeout=30
+                            ),
+                            timeout=180  # Total operation timeout
+                        )
+                    
+                    file_id = message.document.file_id
+                    logger.info(f"Document sent to {chat_id}: {doc_file.name} (attempt {attempt + 1}/{max_retries})")
+                    return file_id
+                    
+                except (TimedOut, asyncio.TimeoutError) as e:
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Timeout sending document to {chat_id}, retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
+                        await asyncio.sleep(delay)
+                    else:
+                        raise
+                        
+                except RetryAfter as e:
+                    if attempt < max_retries - 1:
+                        delay = min(e.retry_after, 60)
+                        logger.warning(f"Rate limited, waiting {delay}s before retry")
+                        await asyncio.sleep(delay)
+                    else:
+                        raise
+            
+            return None
             
         except Exception as e:
-            logger.error(f"Failed to send document to {chat_id}: {e}")
+            logger.error(f"Failed to send document to {chat_id} after {max_retries} attempts: {e}")
             return None
-    
+
     async def edit_message(
         self,
         chat_id: int,
